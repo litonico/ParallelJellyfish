@@ -3,7 +3,7 @@ from generate_hyperbolic import *
 
 verts, edges = make_hyperbolic(5,[0,2])
 radius = 2
-scale = 20 
+scale = 20
 offset = 10
 
 for i in edges:
@@ -27,4 +27,4 @@ for i in edges: # draw edges
     except:
         pass
 
-win.getMouse() 
+win.getMouse()
