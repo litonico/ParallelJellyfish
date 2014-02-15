@@ -4,8 +4,9 @@
 # o-o-o--o- x
 
 # input: number of verts in the first row and a list of expansion rates
+from math import sqrt
 
-def generate_vertlist(num_verts):
+def generate_vertlist(num_verts, edgelen = 1):
     """Generate an initial list of verts and edges"""
     vertlist = []
     edges = []
@@ -13,7 +14,7 @@ def generate_vertlist(num_verts):
     for i in range(num_verts):
         vertlist.append([0, 0, i])
         if i < (num_verts - 1):
-            edges.append([i, i+1])
+            edges.append([i, i+1, edgelen])
         previous_vertex = i
 
     return vertlist, edges
@@ -22,21 +23,15 @@ def offset_vertex(vert_coords, offset = 0):
     new_vert = [0, vert_coords[1] + 1, vert_coords[2] + offset]
     return new_vert
 
-def read_input():
-    """reads command line args and parses with
-    'make_hyperbolic' in mind. """
-    import sys
-    input_num_verts = int(sys.argv[1])
-    expansion_rate =  [int(x) for x in sys.argv[2:]]
-    return input_num_verts, expansion_rate
-
-def make_hyperbolic(input_num_verts, expansion_rate):
+def make_hyperbolic(input_num_verts, expansion_rate, edgelen = 1):
     rows = len(expansion_rate) + 1 # the expansion rate does not include the first row
     print( "Generating initial vertex list" )
     master_vertlist, edges = generate_vertlist(input_num_verts)
 
     # maintains the verts as [[x, y, z], ...]
     # edges as [[v1, v2], ...]
+
+    diagonal_edgelen = edgelen*(2/sqrt(2))
 
     current_vertlist = [x for x in range(len(master_vertlist))]
     num_verts = len(master_vertlist)
@@ -48,13 +43,20 @@ def make_hyperbolic(input_num_verts, expansion_rate):
         print ("Calculating Row " + str(row))
         
         for current_vertex, current_vert_position in enumerate(current_vertlist):
-        
-            if ((current_vert_position + 1)) % expansion_rate[row-1] == 0:
 
+            if expansion_rate[row-1] == 0: 
+            # catch the case where there is no expansion
+                split = False
+            elif ((current_vert_position + 1)) % expansion_rate[row-1] == 0:
+                split = True
+            else:
+                split = False
+        
+            if split:
                 for k in range(2):
                     new_vertex_coords = offset_vertex(
                         master_vertlist[current_vert_position], 
-                        k*(1.0/float(2*row))
+                        k*(1.0/float(row*2))
                         )
 
                     master_vertlist.append(new_vertex_coords)
@@ -62,14 +64,21 @@ def make_hyperbolic(input_num_verts, expansion_rate):
                     next_vertlist.append(new_vertex_number)
 
                     if not row_beginning:
-                        edges.append([new_vertex_number-1, new_vertex_number])
+                        edges.append([new_vertex_number-1, new_vertex_number, edgelen])
 
-                    #stitch to previous row
-                    edges.append([current_vert_position, new_vertex_number])
+                    # stitch to previous row
+                    edges.append([current_vert_position, new_vertex_number, edgelen])
+
+                    # create the diagonal edge
+                    if k == 0 and not row_beginning:
+                        try: # cheating with exceptions
+                            edges.append([current_vert_position-1, new_vertex_number, diagonal_edgelen])
+                        except:
+                            pass
+
 
                     num_verts += 1
                     row_beginning = False
-
             else:
                 # determine position of vert and create it
                 new_vertex_coords = offset_vertex(master_vertlist[current_vert_position])
@@ -80,10 +89,17 @@ def make_hyperbolic(input_num_verts, expansion_rate):
                 next_vertlist.append(new_vertex_number)
 
                 if not row_beginning:
-                    edges.append([new_vertex_number-1, new_vertex_number])
+                    edges.append([new_vertex_number-1, new_vertex_number, edgelen])
 
                 #stitch to previous row
-                edges.append([current_vert_position, new_vertex_number])
+                edges.append([current_vert_position, new_vertex_number, edgelen])
+
+                # create the diagonal edge
+                if not row_beginning:
+                    try: # cheating with exceptions
+                        edges.append([current_vert_position-1, new_vertex_number, diagonal_edgelen])
+                    except:
+                        pass
 
                 num_verts += 1
                 row_beginning = False
