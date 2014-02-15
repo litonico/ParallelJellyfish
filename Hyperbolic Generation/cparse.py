@@ -45,8 +45,11 @@ if __name__ == "__main__":
 #include "mesh_elements.h"\n\
 #define DIAGONAL 1.41421356237\n\
 \n\
-double diagonal_length = DIAGONAL;\n\n\
-'.format(name = filename)
+double diagonal_length = DIAGONAL;\n\
+int num_particles = {num_verts};\n\
+int num_edges = {num_edges};\n\n\
+\
+'.format(name = filename, num_verts = len(verts), num_edges = len(edges))
 
     output = vertify(output, verts)
     output = edgify(output, edges)
