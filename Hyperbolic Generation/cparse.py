@@ -70,5 +70,5 @@ int num_edges = {num_edges};\n\n\
     output = edgify(output, edges)
     output += "#endif"
 
-    with open('{0}.h'.format(filename), 'w+') as f:
+    with open('../{0}.h'.format(filename), 'w+') as f:
         f.write(output)

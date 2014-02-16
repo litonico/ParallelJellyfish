@@ -27,7 +27,7 @@ o-o-o--o- x
 
 input: number of verts in the first row and a list of expansion rates
 """
-j
+
 from math import sqrt
 
 def generate_vertlist(num_verts, edgelen = 1):
