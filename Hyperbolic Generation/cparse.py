@@ -13,6 +13,8 @@ def read_input():
     return filename, input_num_verts, expansion_rate
 
 def edgify(out_string, edges):
+    """Formats edges to the 'Edge' struct defined in 
+    mesh_elements.h"""
     out_string += "Edge edges[] = {\n    "
 
     out_string += ', '.join(
@@ -22,7 +24,8 @@ def edgify(out_string, edges):
     return out_string
 
 def vertify(out_string, verts):
-    """incomplete!"""
+    """Formats verts to the 'Particle' struct
+    defined in mesh_elements.h"""
     out_string += "Particle verts[] = {\n    "
     for i in verts:
         position = "{{{0}, {1}, {2}}}" \
@@ -33,7 +36,6 @@ def vertify(out_string, verts):
 
 
 if __name__ == "__main__":
-
     readin = read_input()
     filename = readin[0]
     verts, edges = make_hyperbolic(readin[1], readin[2])
