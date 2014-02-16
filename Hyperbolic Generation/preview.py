@@ -1,6 +1,10 @@
 from graphics import *
 from generate_hyperbolic import *
+"""
+Quickly preview the output of the generate_hyperbolic
+module. Uses the graphics.py module by John Zelle. 
 
+"""
 verts, edges = make_hyperbolic(20, [2, 3, 3, 3, 3, 3])
 radius = 2
 scale = 35

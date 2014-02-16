@@ -1,9 +1,33 @@
-# y
-# o-o-oo-o
-# | | |/ |
-# o-o-o--o- x
+"""
+Creates the framework of a hyperbolic plane in R2,
+which can then be passed to the cparse module 
+and on to the spring simulation. 
 
-# input: number of verts in the first row and a list of expansion rates
+The verts in this case correspond to cells, while
+the edges correspond to the cell walls. This
+algorithm is deterministic, but a probablistic
+simulation would be pretty easy to implement 
+(I think- I haven't tried it!)
+
+The num_verts parameter controls the number of verts
+in the first row.
+
+The expansion_rate parameter is a list of values
+that determine when a vertex will spawn two verts
+rather than just one. A value of 5 will mean that
+there will be a split every 5th vertex. The number
+of items in the list determines the number of rows
+in the mesh.
+
+The output will look something like this:
+y
+o-o-oo-o
+| | |/ |
+o-o-o--o- x
+
+input: number of verts in the first row and a list of expansion rates
+"""
+j
 from math import sqrt
 
 def generate_vertlist(num_verts, edgelen = 1):
@@ -105,7 +129,7 @@ def make_hyperbolic(input_num_verts, expansion_rate, edgelen = 1):
                 row_beginning = False
 
         # move to next line
-        current_vertlist = [x for x in next_vertlist]
+        current_vertlist = [x for x in next_vertlist] # the right way to copy lists
 
     return master_vertlist, edges
 

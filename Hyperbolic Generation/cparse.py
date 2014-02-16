@@ -1,11 +1,20 @@
 from generate_hyperbolic import *
 
-# use:
-# python3 cparse filename numverts expansion_rate1 expansion_rate2 ...
+"""
+Parses the output of the generate_hyperbolic module 
+into a C header file that's referenced as the master
+list of vertices and edges.
+
+use:
+python3 cparse filename numverts expansion_rate1 expansion_rate2 ...
+
+"""
 
 def read_input():
-    """reads command line args and parses with
-    'make_hyperbolic' in mind. """
+    """
+    reads command line args and parses with
+    'make_hyperbolic' in mind.
+    """
     import sys
     filename = sys.argv[1]
     input_num_verts = int(sys.argv[2])
@@ -13,8 +22,10 @@ def read_input():
     return filename, input_num_verts, expansion_rate
 
 def edgify(out_string, edges):
-    """Formats edges to the 'Edge' struct defined in 
-    mesh_elements.h"""
+    """
+    Formats edges to the 'Edge' struct defined in 
+    mesh_elements.h
+    """
     out_string += "Edge edges[] = {\n    "
 
     out_string += ', '.join(
@@ -24,8 +35,10 @@ def edgify(out_string, edges):
     return out_string
 
 def vertify(out_string, verts):
-    """Formats verts to the 'Particle' struct
-    defined in mesh_elements.h"""
+    """
+    Formats verts to the 'Particle' struct
+    defined in mesh_elements.h
+    """
     out_string += "Particle verts[] = {\n    "
     for i in verts:
         position = "{{{0}, {1}, {2}}}" \
