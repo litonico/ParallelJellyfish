@@ -41,15 +41,20 @@ def vertify(out_string, verts):
     defined in mesh_elements.h
     """
     for i in verts:
-        position = "{0} {1} {2}\n" \
+        position = "{0} {1} {2}" \
             .format(float(i[0]), float(i[1]), float(i[2])) 
-        out_string += position
+        out_string += "{0} {1}\n".format(position, position)
     return out_string
 
 
 if __name__ == "__main__":
-    readin = read_input()
-    verts, edges = make_hyperbolic(readin[0], readin[1])
+    try:
+        readin = read_input()
+        verts, edges = make_hyperbolic(readin[0], readin[1])
+    except:
+        verts, edges = make_hyperbolic(5, [2,2]) # testing conditions
+    datapath = '../data'    
+    cpath = '../Springs'
 
     constants = \
 '#define NUM_PARTICLES {num_verts}\n\
@@ -60,11 +65,11 @@ if __name__ == "__main__":
     verts = vertify("", verts)
     edges = edgify("", edges)
 
-    with open('verts', 'w+') as v:
+    with open('{path}/verts'.format(path = datapath), 'w+') as v:
         v.write(verts)
 
-    with open('edges', 'w+') as e:
+    with open('{path}/edges'.format(path = datapath), 'w+') as e:
         e.write(edges)
 
-    with open('constants.h', 'w+') as c:
+    with open('{path}/constants.h'.format(path = cpath), 'w+') as c:
         c.write(constants)
