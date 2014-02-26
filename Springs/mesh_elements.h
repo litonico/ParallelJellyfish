@@ -6,7 +6,6 @@
 //
 //
 
-
 #ifndef Hyperbolic_C_mesh_elements_h
 #define Hyperbolic_C_mesh_elements_h
 #include "vectormath.h"

@@ -14,8 +14,8 @@ int num_iterations = 1;
 double restlen = 1.0;
 double collide_dist = 1.0;
 
-void satisfy_constraints(Particle verts[], Edge edges[], num_verts);
-void resolve_collision(Particle verts[], Edge edges[], num_edges);
-void integrate_momentum(Particle verts[], Edge edges[], num_verts);
+void satisfy_constraints(Particle verts[], Edge edges[], int num_verts);
+void resolve_collision(Particle verts[], Edge edges[], int num_edges);
+void integrate_momentum(Particle verts[], Edge edges[], int num_verts);
 
 #endif

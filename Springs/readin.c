@@ -1,8 +1,6 @@
 //
 //  readin.c
 //  Hyperbolic_C
-//
-//  Created by Lito Nicolai on 2/18/14.
 //  Copyright (c) 2014 Lito Nicolai. All rights reserved.
 //
 

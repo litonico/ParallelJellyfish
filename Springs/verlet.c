@@ -10,7 +10,7 @@
 #include "vectormath.c"
 #include "verlet.h"
 #include "constants.h"
-
+#define num_iterations 1
 
 void integrate_momentum(Particle verts[], Edge edges[], int num_verts){
     // For each vertex, calculates its change in 
@@ -25,10 +25,9 @@ void integrate_momentum(Particle verts[], Edge edges[], int num_verts){
         vector *prev_x = &(verts[i].prev_pos); 
         // points to the prev_pos of the i'th elem. of verts
         
-        // ! tODO: acceleration !
+        // TODO: acceleration 
         *x = v_add(*x, v_sub(*x, *prev_x)); // contents of x are:
         //x += x - prev_x + accel*timestep^2
-        
         *prev_x = temp; 
         // the contents of prev_x are set to be what was stored in temp
         
@@ -46,16 +45,23 @@ void satisfy_constraints(Particle verts[], Edge edges[], int num_edges){
     for (int i = 0; i < num_iterations; i++) {
         for (int j = 0; j < num_edges; j++) {
             Edge* current_edge = &edges[j];
+            int restlen = current_edge->length;
+            
+            printf("restlen: %d\n", restlen);
+
             vector* x1 = &(verts[current_edge->a].pos);
             vector* x2 = &(verts[current_edge->b].pos);
             vector dir_vector = v_sub(*x1, *x2);
             double len = v_magnitude(dir_vector);
             vector difference = v_scalar_mul(
-                                            dir_vector,
-                                            ((restlen - len)/2.0)
-                                            );
-            verts[i].pos = v_add(*x2, difference);
-            verts[j].pos = v_sub(*x1, difference);
+                                        v_normalize(dir_vector),
+                                        ((restlen - len)/2.0)
+                                    );
+             
+            printf("difference: %f, %f, %f\n", 
+                    difference.x, difference.y, difference.z);
+            *x2 = v_add(*x2, difference);
+            *x1 = v_sub(*x1, difference);
                 
         }
     }

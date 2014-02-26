@@ -46,8 +46,17 @@ vector v_scalar_mul(vector v, double s){
     return ret;
 }
 
+
 double v_magnitude(vector v){
     double ret;
     ret = sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
     return ret;
 }
+
+vector v_normalize(vector v) {
+    vector ret;
+    ret = v_scalar_mul(v, 1.0/v_magnitude(v));
+    return ret;
+}
+
+            

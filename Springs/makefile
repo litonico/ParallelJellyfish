@@ -2,6 +2,6 @@ all:
 	clang testing_main.c -o testing.o
 CFLAGS=-Wall -g
 clean:
-	rm -f springs
+	rm *.o
 run:
-	./testing
+	./testing.o
