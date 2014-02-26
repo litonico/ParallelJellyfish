@@ -47,19 +47,18 @@ void satisfy_constraints(Particle verts[], Edge edges[], int num_edges){
             Edge* current_edge = &edges[j];
             int restlen = current_edge->length;
             
-            printf("restlen: %d\n", restlen);
-
             vector* x1 = &(verts[current_edge->a].pos);
             vector* x2 = &(verts[current_edge->b].pos);
-            vector dir_vector = v_sub(*x1, *x2);
-            double len = v_magnitude(dir_vector);
+
+            vector length_vector = v_sub(*x2, *x1);
+
+            double len = v_magnitude(length_vector);
+
             vector difference = v_scalar_mul(
-                                        v_normalize(dir_vector),
+                                        v_normalize(length_vector),
                                         ((restlen - len)/2.0)
                                     );
              
-            printf("difference: %f, %f, %f\n", 
-                    difference.x, difference.y, difference.z);
             *x2 = v_add(*x2, difference);
             *x1 = v_sub(*x1, difference);
                 

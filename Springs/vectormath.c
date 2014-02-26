@@ -40,7 +40,7 @@ vector v_sub(vector v1, vector v2){
 vector v_scalar_mul(vector v, double s){
     vector ret;
     ret.x = v.x * s;
-    ret.y = v.x * s;
+    ret.y = v.y * s;
     ret.z = v.z * s;
     
     return ret;
