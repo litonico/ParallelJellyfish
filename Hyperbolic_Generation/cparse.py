@@ -21,7 +21,7 @@ def read_input():
     return input_num_verts, expansion_rate
 
 def edgify(out_string, edges):
-    restlen = 1
+    restlen = 1.0
     diag_len = 1.1412135623
     """
     Formats edges to the 'Edge' struct defined in 

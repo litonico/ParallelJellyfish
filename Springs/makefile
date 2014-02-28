@@ -1,5 +1,5 @@
 all:
-	clang -o testing.o testing_main.c 
+	clang -o main.o main.c 
 vectormath: vectormath.c vectormath.h
 	clang 
 verlet: vectormath.o verlet.h constants.h 
@@ -11,4 +11,4 @@ CFLAGS=-Wall -g
 clean:
 	rm *.o
 run:
-	./testing.o
+	./main.o

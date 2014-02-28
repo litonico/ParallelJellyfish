@@ -1,2 +1,2 @@
-#define NUM_PARTICLES 2 
-#define NUM_EDGES 1
+#define NUM_PARTICLES 23
+#define NUM_EDGES 48

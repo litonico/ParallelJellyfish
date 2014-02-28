@@ -30,7 +30,7 @@ input: number of verts in the first row and a list of expansion rates
 
 from math import sqrt
 
-def generate_vertlist(num_verts, edgelen = 1):
+def generate_vertlist(num_verts, edgelen = 1.0):
     """Generate an initial list of verts and edges"""
     vertlist = []
     edges = []
@@ -47,7 +47,7 @@ def offset_vertex(vert_coords, offset = 0):
     new_vert = [0, vert_coords[1] + 1, vert_coords[2] + offset]
     return new_vert
 
-def make_hyperbolic(input_num_verts, expansion_rate, edgelen = 1):
+def make_hyperbolic(input_num_verts, expansion_rate, edgelen = 1.0):
     rows = len(expansion_rate) + 1 # the expansion rate does not include the first row
     print( "Generating initial vertex list" )
     master_vertlist, edges = generate_vertlist(input_num_verts)
