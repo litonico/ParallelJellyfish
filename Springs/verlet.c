@@ -36,7 +36,6 @@ void integrate_momentum(Particle verts[], Edge edges[], int num_verts){
 
 
 void satisfy_constraints(Particle verts[], Edge edges[], int num_edges){
-    
     // Iterates through the edges of the mesh
     // and moves vertices towards or away from
     // each other such that each edge converges
@@ -73,19 +72,26 @@ void resolve_collision(Particle verts[], Edge edges[], int num_verts){
     // them apart to avoid collisions. (Does not do
     // a perfect job- e.g. edge-edge intersection)
     
-    for (int i = 0; i < NUM_PARTICLES; i++) {
-        for (int j = i; j < NUM_PARTICLES; j++){
+    double collide_dist = 1.0;
+
+    for (int i = 0; i < num_verts; i++) {
+        for (int j = i + 1; j < num_verts; j++){
+            
             vector *x1 = &(verts[i].pos);
             vector *x2 = &(verts[j].pos);
-            vector dir_vector = v_sub(*x1, *x2);
-            double len = v_magnitude(dir_vector);
+
+            vector length_vector = v_sub(*x2, *x1);
+
+            double len = v_magnitude(length_vector);
+
             if (len < collide_dist) {
                 vector difference = v_scalar_mul(
-                                        dir_vector,
+                                        v_normalize(length_vector),
                                         ((collide_dist - len)/2.0)
                                         );
-                verts[i].pos = v_add(*x2, difference);
-                verts[j].pos = v_add(*x2, difference);
+
+                *x2 = v_add(*x2, difference);
+                *x1 = v_sub(*x1, difference);
                 
             }
         }

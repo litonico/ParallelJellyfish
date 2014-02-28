@@ -20,6 +20,16 @@ int main(void){
             v_magnitude(v_sub(verts[0].pos, verts[1].pos)));
 
     // integrate_momentum(verts, edges, NUM_PARTICLES);
-    resolve_collision(verts, edges, NUM_PARTICLES);
+
+    vector movetest = {-1, -1, -1};
+    verts[1].pos = v_add(verts[1].pos, movetest);
+
+    printf("initial len: %f\n",
+            v_magnitude(v_sub(verts[0].pos, verts[1].pos)));
+
+    resolve_collision(verts, edges, 2);
+
+    printf("Corrected len: %f\n",
+            v_magnitude(v_sub(verts[0].pos, verts[1].pos)));
     return 0;
 }

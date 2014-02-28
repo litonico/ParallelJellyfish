@@ -10,9 +10,7 @@
 #define Hyperbolic_C_verlet_h
 #include "mesh_elements.h"
 
-int num_iterations = 1;
-double restlen = 1.0;
-double collide_dist = 1.0;
+#define num_iterations 1
 
 void satisfy_constraints(Particle verts[], Edge edges[], int num_verts);
 void resolve_collision(Particle verts[], Edge edges[], int num_edges);
