@@ -9,7 +9,6 @@
 
 #include "vectormath.c"
 #include "verlet.h"
-#include "constants.h"
 #define num_iterations 1
 
 void integrate_momentum(Particle verts[], Edge edges[], int num_verts){

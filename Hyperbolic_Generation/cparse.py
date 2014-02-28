@@ -62,14 +62,19 @@ if __name__ == "__main__":
 \
 '.format(num_verts = len(verts), num_edges = len(edges))
 
-    verts = vertify("", verts)
-    edges = edgify("", edges)
+    verts_str = vertify("", verts)
+    edges_str = edgify("", edges)
+
+    num_verts = len(verts)
+    num_edges  = len(edges)
 
     with open('{path}/verts'.format(path = datapath), 'w+') as v:
-        v.write(verts)
+        v.write(str(num_verts) + "\n")
+        v.write(verts_str)
 
     with open('{path}/edges'.format(path = datapath), 'w+') as e:
-        e.write(edges)
+        e.write(str(num_edges) + "\n")
+        e.write(edges_str)
 
-    with open('{path}/constants.h'.format(path = cpath), 'w+') as c:
-        c.write(constants)
+    # with open('{path}/constants.h'.format(path = cpath), 'w+') as c:
+    #    c.write(constants)

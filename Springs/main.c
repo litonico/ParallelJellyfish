@@ -10,17 +10,13 @@
 #include <stdlib.h>
 #include "mesh_elements.h"
 #include "verlet.c"
-//#include "constants.h"
 
 int main(int argc, const char * argv[])
 {
-    // Allocate memory for arrays of verts and edges
-    Particle* p = (Particle *) calloc(NUM_PARTICLES,
-            sizeof(Particle[NUM_PARTICLES]));
-    Edge* e = (Edge *) calloc(NUM_EDGES,
-            sizeof(Edge[NUM_EDGES]));
-
-    // Fill those arrays by looping through the verts and edges files
+    int NUM_PARTICLES;
+    int NUM_EDGES;
+    
+    // Open verts file
     FILE *fv;
     fv = fopen("../data/verts", "r+");
 
@@ -29,6 +25,15 @@ int main(int argc, const char * argv[])
         exit(-1);
     }
 
+    // Get the number of verts
+    fscanf(fv, "%d", &NUM_PARTICLES);
+
+    // Allocate the particle-array
+    Particle* p = (Particle *) calloc(NUM_PARTICLES,
+            sizeof(Particle[NUM_PARTICLES]));
+
+    // Loop through the vert file to
+    // fill the particle-array
     for (int i = 0; i < NUM_PARTICLES; i++){
         fscanf(fv, "%lf %lf %lf" 
                   "%lf %lf %lf", 
@@ -41,8 +46,7 @@ int main(int argc, const char * argv[])
 
     fclose(fv);
     
-    // Fill edges array
-    
+    // Open edges file
     FILE *fe;
     fe = fopen("../data/edges", "r+");
 
@@ -51,7 +55,16 @@ int main(int argc, const char * argv[])
         exit(-1);
     }
 
-    for (int i = 0; i < NUM_PARTICLES; i++){
+    // Get the number of edges
+    fscanf(fe, "%d", &NUM_EDGES);
+
+    // Allocate the edge-array
+    Edge* e = (Edge *) calloc(NUM_EDGES,
+            sizeof(Edge[NUM_EDGES]));
+
+    // Loop through the file to fill the 
+    // edge-array
+    for (int i = 0; i < NUM_EDGES; i++){
         fscanf(fe, "%d %d %lf",
                 &e[i].a, &e[i].b, &e[i].length);
     }
