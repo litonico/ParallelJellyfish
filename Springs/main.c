@@ -13,6 +13,13 @@
 #include "mesh_elements.h"
 #include "verlet.c"
 
+
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, GL_TRUE);
+}
+
 int main(int argc, const char * argv[])
 {
     int NUM_PARTICLES;
@@ -54,7 +61,7 @@ int main(int argc, const char * argv[])
 
     if( fe == NULL){
         printf("No such file\n");
-        return -1
+        return -1;
     }
 
     // Get the number of edges
@@ -101,9 +108,21 @@ int main(int argc, const char * argv[])
     glfwMakeContextCurrent(window);
 
     /* Loop until the user closes the window */
+
+    glfwSetKeyCallback(window, key_callback);
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
+
+        glPointSize(10.0);
+        glBegin( GL_POINTS );
+        glColor3f( 0.95f, 0.207, 0.031f );
+
+        for (int i = 0; i < NUM_PARTICLES; i++){
+            glVertex3f(p[i].pos.x, p[i].pos.y, p[i].pos.z);
+        }
+
+        glEnd();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
