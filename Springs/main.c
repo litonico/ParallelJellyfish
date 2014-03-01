@@ -13,9 +13,9 @@
 #include "mesh_elements.h"
 #include "verlet.c"
 
+static void key_callback(
+        GLFWwindow* window, int key, int scancode, int action, int mods) {
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
 }
@@ -107,23 +107,55 @@ int main(int argc, const char * argv[])
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
-    /* Loop until the user closes the window */
-
     glfwSetKeyCallback(window, key_callback);
+
+    /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
+        float ratio;
+        int width, height;
 
-        glPointSize(10.0);
-        glBegin( GL_POINTS );
-        glColor3f( 0.95f, 0.207, 0.031f );
+        glfwGetFramebufferSize(window, &width, &height);
+        ratio = width / (float) height;
 
-        for (int i = 0; i < NUM_PARTICLES; i++){
-            glVertex3f(p[i].pos.x, p[i].pos.y, p[i].pos.z);
+        glViewport(0, 0, width, height);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+        glMatrixMode(GL_MODELVIEW);
+
+        glLoadIdentity();
+        glRotatef((float) glfwGetTime() * 50.f, 50.f, 50.f, 1.f);
+        // glClearColor(0.0, 0.0, 0.0, 1.0);
+
+        glBegin(GL_LINES);
+        glColor3f(1.0, 0.0, 0.0);
+        for (int i = 0; i < NUM_EDGES; ++i){
+            vector v1 = p[e[i].a].pos;
+            vector v2 = p[e[i].b].pos;
+            glVertex3f(v1.x, v1.y, v1.z);
+            glVertex3f(v2.x, v2.y, v2.z);
         }
-
         glEnd();
 
+
+        // run the Verlet functions
+        // integrate_momentum(p, e, NUM_PARTICLES);
+        satisfy_constraints(p, e, NUM_EDGES);
+        resolve_collision(p,e, NUM_PARTICLES);
+
+/*
+        glBegin(GL_POINTS);
+        glColor3f( 0.95, 0.207, 0.031);
+        for (int i = 0; i < NUM_PARTICLES; ++i){
+            vector v = p[i].pos;
+            glVertex3f(v.x, v.y, v.z);
+        }
+        glEnd();
+*/
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
@@ -132,10 +164,7 @@ int main(int argc, const char * argv[])
     }
 
     glfwTerminate();
-    return 0;
-    integrate_momentum(p, e, NUM_PARTICLES);
-    satisfy_constraints(p, e, NUM_EDGES);
-    resolve_collision(p,e, NUM_PARTICLES);
+
     return 0;
 }
 

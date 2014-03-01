@@ -21,8 +21,8 @@ def read_input():
     return input_num_verts, expansion_rate
 
 def edgify(out_string, edges):
-    restlen = 1.0
-    diag_len = 1.1412135623
+    restlen = 1.0 
+    diag_len = 1.1412135623 
     """
     Formats edges to the 'Edge' struct defined in 
     mesh_elements.h
@@ -40,6 +40,7 @@ def vertify(out_string, verts):
     Formats verts to the 'Particle' struct
     defined in mesh_elements.h
     """
+
     for i in verts:
         position = "{0} {1} {2}" \
             .format(float(i[0]), float(i[1]), float(i[2])) 
