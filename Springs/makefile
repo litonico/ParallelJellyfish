@@ -1,5 +1,7 @@
+GLFW = -lglfw -framework Cocoa -framework OpenGL \
+	   -framework IOKit -framework CoreVideo
 all:
-	clang -o main.o main.c 
+	clang -o main.o main.c $(GLFW) 
 vectormath: vectormath.c vectormath.h
 	clang 
 verlet: vectormath.o verlet.h constants.h 

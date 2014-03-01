@@ -8,6 +8,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <GLFW/glfw3.h>
+
 #include "mesh_elements.h"
 #include "verlet.c"
 
@@ -52,7 +54,7 @@ int main(int argc, const char * argv[])
 
     if( fe == NULL){
         printf("No such file\n");
-        exit(-1);
+        return -1
     }
 
     // Get the number of edges
@@ -74,6 +76,44 @@ int main(int argc, const char * argv[])
 
     fclose(fv);
 
+
+/* ----------------------------------------------*/
+
+
+    // OPENGL 
+
+    
+    GLFWwindow* window;
+
+    /* Initialize the library */
+    if (!glfwInit())
+        return -1;
+
+    /* Create a windowed mode window and its OpenGL context */
+    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    if (!window)
+    {
+        glfwTerminate();
+        return -1;
+    }
+
+    /* Make the window's context current */
+    glfwMakeContextCurrent(window);
+
+    /* Loop until the user closes the window */
+    while (!glfwWindowShouldClose(window))
+    {
+        /* Render here */
+
+        /* Swap front and back buffers */
+        glfwSwapBuffers(window);
+
+        /* Poll for and process events */
+        glfwPollEvents();
+    }
+
+    glfwTerminate();
+    return 0;
     integrate_momentum(p, e, NUM_PARTICLES);
     satisfy_constraints(p, e, NUM_EDGES);
     resolve_collision(p,e, NUM_PARTICLES);
