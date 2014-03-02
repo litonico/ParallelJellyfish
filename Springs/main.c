@@ -13,11 +13,29 @@
 #include "mesh_elements.h"
 #include "verlet.c"
 
+GLfloat zoom = 2.f;
+
 static void key_callback(
         GLFWwindow* window, int key, int scancode, int action, int mods) {
 
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
+    // if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        // glfwSetWindowShouldClose(window, GL_TRUE);
+    switch (key)
+    {
+        case GLFW_KEY_ESCAPE:
+            glfwSetWindowShouldClose(window, GL_TRUE);
+            break;
+        case GLFW_KEY_UP:
+            zoom -= 0.25f;
+            if (zoom < 0.f)
+                zoom = 0.f;
+            break;
+        case GLFW_KEY_DOWN:
+            zoom += 0.25f;
+            break;
+        default:
+            break;
+    }
 }
 
 int main(int argc, const char * argv[])
@@ -109,6 +127,9 @@ int main(int argc, const char * argv[])
 
     glfwSetKeyCallback(window, key_callback);
 
+    // Jitter once
+    jitter_x(p, 1.0, NUM_PARTICLES);
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -124,11 +145,13 @@ int main(int argc, const char * argv[])
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+        glOrtho(-ratio, ratio, -1.f, 1.f, 500.f, -500.f);
         glMatrixMode(GL_MODELVIEW);
 
         glLoadIdentity();
-        glRotatef((float) glfwGetTime() * 50.f, 50.f, 50.f, 1.f);
+        glTranslatef(0, 0, -zoom);
+
+        // glRotatef((float) glfwGetTime() * 50.f, 50.f, 50.f, 1.f);
         // glClearColor(0.0, 0.0, 0.0, 1.0);
 
         glBegin(GL_LINES);

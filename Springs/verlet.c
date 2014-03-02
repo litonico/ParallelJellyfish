@@ -11,6 +11,16 @@
 #include "verlet.h"
 #define num_iterations 1
 
+
+
+void jitter_x(Particle verts[], float coef, int num_verts) {
+    for (int i = 0; i < num_verts; i++) {
+        float rndm = (rand() / (float) RAND_MAX) * (float) coef; 
+        verts[i].pos.x += rndm;
+        }
+}
+
+
 void integrate_momentum(Particle verts[], Edge edges[], int num_verts){
     // For each vertex, calculates its change in 
     // position based on Verlet integration
@@ -43,8 +53,9 @@ void satisfy_constraints(Particle verts[], Edge edges[], int num_edges){
     for (int i = 0; i < num_iterations; i++) {
         for (int j = 0; j < num_edges; j++) {
             Edge* current_edge = &edges[j];
-            int restlen = current_edge->length;
+            double restlen = current_edge->length;
             
+
             vector* x1 = &(verts[current_edge->a].pos);
             vector* x2 = &(verts[current_edge->b].pos);
 

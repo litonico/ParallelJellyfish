@@ -12,6 +12,7 @@
 
 #define num_iterations 1
 
+void jitter_x(Particle verts[], float coef, int num_verts);
 void satisfy_constraints(Particle verts[], Edge edges[], int num_verts);
 void resolve_collision(Particle verts[], Edge edges[], int num_edges);
 void integrate_momentum(Particle verts[], Edge edges[], int num_verts);
