@@ -50,6 +50,8 @@ void satisfy_constraints(Particle verts[], Edge edges[], int num_edges){
     // each other such that each edge converges
     // in length.
     
+    float coefficient = 0.2; // speed of convergence
+
     for (int i = 0; i < num_iterations; i++) {
         for (int j = 0; j < num_edges; j++) {
             Edge* current_edge = &edges[j];
@@ -68,8 +70,8 @@ void satisfy_constraints(Particle verts[], Edge edges[], int num_edges){
                                         ((restlen - len)/2.0)
                                     );
              
-            *x2 = v_add(*x2, difference);
-            *x1 = v_sub(*x1, difference);
+            *x2 = v_add(*x2, v_scalar_mul(difference, coefficient));
+            *x1 = v_sub(*x1, v_scalar_mul(difference, coefficient));
                 
         }
     }

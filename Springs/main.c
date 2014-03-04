@@ -13,14 +13,13 @@
 #include "mesh_elements.h"
 #include "verlet.c"
 
-// TODO: refactor OpenGL and view controls
-// into a separate file
+// TODO: refactor OpenGL into a separate file
 GLfloat zoom = 2.f;
 float currentTime;
 float lastTime;
 float deltaTime;
 float position;
-float speed = 3.f;
+GLfloat speed = 3.f;
 float mouseSpeed = 0.005;
 float right;
 float direction;
@@ -141,7 +140,7 @@ int main(int argc, const char * argv[])
     }
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(640, 480, "Jellyfish Tentacles", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -153,13 +152,12 @@ int main(int argc, const char * argv[])
     glfwSetKeyCallback(window, key_callback);
 
     // Jitter once
-    jitter_x(p, 1.0, NUM_PARTICLES);
+    jitter_x(p, 0.001, NUM_PARTICLES);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         deltaTime = currentTime - lastTime;
-
 
         // The camera needs to be independent of the
         // view ratio of view window
@@ -168,8 +166,9 @@ int main(int argc, const char * argv[])
 
         //Mouse tracking for camera
         glfwGetCursorPos(window, &xpos, &ypos);
-        horizontalAngle += mouseSpeed * deltaTime * float(width/2.f - xpos );
-        verticalAngle += mouseSpeed * deltaTime * float(height/2.f - ypos );
+        // TODO: Make this work
+        // horizontalAngle += mouseSpeed * deltaTime * float(width/2.f - xpos );
+        // verticalAngle += mouseSpeed * deltaTime * float(height/2.f - ypos );
         
         // Initialize the viewport
         glViewport(0, 0, width, height);
@@ -182,14 +181,14 @@ int main(int argc, const char * argv[])
         // glTranslatef(0, 0, -zoom); // Zoom controls: UP / DOWN
 
         // glFrustum(.5, -.5, -.5 * ratio, .5 * ratio, 1, 50);
-        // glOrtho(-ratio, ratio, -1.f, 1.f, 500.f, -500.f);
+        glOrtho(-ratio*10, ratio*10, -1.f*10, 1.f*10, 500.f, -500.f);
         //
         glMatrixMode(GL_MODELVIEW);
 
         glLoadIdentity();
         // glTranslatef(0, 0, -zoom);
 
-        glRotatef((float) glfwGetTime() * 50.f, 50.f, 50.f, 1.f);
+        glRotatef((float) glfwGetTime() *  50.f, 50.f, 50.f, 1.f);
         // glClearColor(0.0, 0.0, 0.0, 1.0);
 
         glBegin(GL_LINES);
@@ -205,6 +204,7 @@ int main(int argc, const char * argv[])
         lastTime = currentTime;
         // run the Verlet functions
         // integrate_momentum(p, e, NUM_PARTICLES);
+        
         satisfy_constraints(p, e, NUM_EDGES);
         resolve_collision(p,e, NUM_PARTICLES);
 
