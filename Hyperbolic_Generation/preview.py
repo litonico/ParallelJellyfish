@@ -1,10 +1,16 @@
-from graphics import *
 from generate_hyperbolic import *
+try:
+    from graphics import *
+except ImportError:
+    print("Cannot find graphics.py in this directory– \
+            see readme for dependencies")
+
 """
 Quickly preview the output of the generate_hyperbolic
 module. Uses the graphics.py module by John Zelle. 
 
 """
+
 verts, edges = make_hyperbolic(20, [2, 3, 3, 3, 3, 3])
 radius = 2
 scale = 35
