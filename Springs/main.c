@@ -86,8 +86,6 @@ int main(int argc, const char * argv[])
                 &p[i].prev_pos.x, &p[i].prev_pos.y, &p[i].prev_pos.z);
     }
 
-    printf("Second vector coords: %f %f %f\n", 
-            p[1].pos.x, p[1].pos.y, p[1].pos.z);
 
     fclose(fv);
     
@@ -114,9 +112,6 @@ int main(int argc, const char * argv[])
                 &e[i].a, &e[i].b, &e[i].length);
     }
 
-    printf("Second edge info: %d %d %f",
-                e[1].a, e[1].b, e[1].length);
-
     fclose(fv);
 
 
@@ -140,7 +135,7 @@ int main(int argc, const char * argv[])
     }
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Jellyfish Tentacles", NULL, NULL);
+    window = glfwCreateWindow(1280, 960, "Jellyfish Tentacles", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -188,7 +183,7 @@ int main(int argc, const char * argv[])
         glLoadIdentity();
         // glTranslatef(0, 0, -zoom);
 
-        glRotatef((float) glfwGetTime() *  50.f, 50.f, 50.f, 1.f);
+        glRotatef((float)/* glfwGetTime() * */ 50.f, 50.f, 50.f, 1.f);
         // glClearColor(0.0, 0.0, 0.0, 1.0);
 
         glBegin(GL_LINES);
@@ -203,9 +198,8 @@ int main(int argc, const char * argv[])
 
         lastTime = currentTime;
         // run the Verlet functions
-        // integrate_momentum(p, e, NUM_PARTICLES);
-        
-        satisfy_constraints(p, e, NUM_EDGES);
+        integrate_momentum(p, e, NUM_PARTICLES);
+        satisfy_constraints(p, e, NUM_EDGES, 1.0);
         resolve_collision(p,e, NUM_PARTICLES);
 
 /*

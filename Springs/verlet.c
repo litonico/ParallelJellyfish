@@ -44,14 +44,12 @@ void integrate_momentum(Particle verts[], Edge edges[], int num_verts){
 }
 
 
-void satisfy_constraints(Particle verts[], Edge edges[], int num_edges){
+void satisfy_constraints(Particle verts[], Edge edges[], int num_edges, float coef){
     // Iterates through the edges of the mesh
     // and moves vertices towards or away from
     // each other such that each edge converges
     // in length.
     
-    float coefficient = 0.2; // speed of convergence
-
     for (int i = 0; i < num_iterations; i++) {
         for (int j = 0; j < num_edges; j++) {
             Edge* current_edge = &edges[j];
@@ -70,8 +68,8 @@ void satisfy_constraints(Particle verts[], Edge edges[], int num_edges){
                                         ((restlen - len)/2.0)
                                     );
              
-            *x2 = v_add(*x2, v_scalar_mul(difference, coefficient));
-            *x1 = v_sub(*x1, v_scalar_mul(difference, coefficient));
+            *x2 = v_add(*x2, v_scalar_mul(difference, coef));
+            *x1 = v_sub(*x1, v_scalar_mul(difference, coef));
                 
         }
     }
