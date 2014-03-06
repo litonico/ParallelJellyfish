@@ -2,7 +2,7 @@ from generate_hyperbolic import *
 try:
     from graphics import *
 except ImportError:
-    print("Cannot find graphics.py in this directory– \
+    print("Cannot find graphics.py in this directory- \
             see readme for dependencies")
 
 """

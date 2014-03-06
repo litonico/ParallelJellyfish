@@ -187,10 +187,12 @@ int main(int argc, const char * argv[])
         // glClearColor(0.0, 0.0, 0.0, 1.0);
 
         glBegin(GL_LINES);
-        glColor3f(1.0, 0.0, 0.0);
         for (int i = 0; i < NUM_EDGES; ++i){
+
             vector v1 = p[e[i].a].pos;
             vector v2 = p[e[i].b].pos;
+            glColor3f(1.0, 1.0/(v_magnitude(v_sub(v1, v2)) + 1.0), 0.0);
+
             glVertex3f(v1.x, v1.y, v1.z);
             glVertex3f(v2.x, v2.y, v2.z);
         }

@@ -13,5 +13,10 @@ typedef struct {
     double length;
 } Edge;
 
+// Not sure if I'll need this
+typedef struct {
+    vector A, B, C, D;
+} FacePair;
+
 #endif
 
