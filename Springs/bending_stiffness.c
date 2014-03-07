@@ -1,5 +1,5 @@
 // Compute faces from edges
-// Compute list of triangle pairs
+// Compute list of triangle pairs (possibly in python?)
 
 // Bending stiffness
 //
@@ -10,6 +10,10 @@
 //
 // For each triangle-pair, with outside verts A and B
 // and inside verts C and D:
+//      N_A = v_cross(v_sub(A, C), v_sub(A, D));
+//      N_B = v_cross(v_sub(B, D), v_sub(B, C));
+//      N_C = v_cross(v_sub(C, B), v_sub(C, A));
+//      N_D = v_cross(v_sub(D, A), v_sub(D, B));
 //      alpha_A = N(B)/(N(A) + N(B))
 //      alpha_B = N(A)/(N(A) + N(B))
 //      alpha_C = N(D)/(N(C) + N(D))

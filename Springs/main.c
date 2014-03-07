@@ -25,6 +25,8 @@ float right;
 float direction;
 
 
+unsigned char pause = 0;
+
 static void key_callback(
         GLFWwindow* window, int key, int scancode, int action, int mods) {
 
@@ -51,6 +53,10 @@ static void key_callback(
             position += direction * deltaTime * speed;
         case GLFW_KEY_S:
             position += direction * deltaTime * speed;
+        case GLFW_KEY_U:
+            pause = 0;
+        case GLFW_KEY_P:
+            pause = 1;
         default:
             break;
     }
@@ -200,9 +206,11 @@ int main(int argc, const char * argv[])
 
         lastTime = currentTime;
         // run the Verlet functions
-        integrate_momentum(p, e, NUM_PARTICLES);
-        satisfy_constraints(p, e, NUM_EDGES, 1.0);
-        resolve_collision(p,e, NUM_PARTICLES);
+        if (!pause) {
+            integrate_momentum(p, e, NUM_PARTICLES);
+            satisfy_constraints(p, e, NUM_EDGES, 1.0);
+            resolve_collision(p,e, NUM_PARTICLES);
+        }
 
 /*
         glBegin(GL_POINTS);
