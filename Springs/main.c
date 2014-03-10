@@ -118,6 +118,7 @@ int main(int argc, const char * argv[])
                 &e[i].a, &e[i].b, &e[i].length);
     }
 
+    printf("%d\n",NUM_EDGES);
     fclose(fv);
 
 
@@ -153,7 +154,7 @@ int main(int argc, const char * argv[])
     glfwSetKeyCallback(window, key_callback);
 
     // Jitter once
-    jitter_x(p, 0.001, NUM_PARTICLES);
+    jitter_x(p, 0.01, NUM_PARTICLES);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -197,7 +198,7 @@ int main(int argc, const char * argv[])
 
             vector v1 = p[e[i].a].pos;
             vector v2 = p[e[i].b].pos;
-            glColor3f(1.0, 1.0/(v_magnitude(v_sub(v1, v2)) + 1.0), 0.0);
+            glColor3f(1.0, 1.0/v_magnitude(v_sub(v1, v2)), 0.0);
 
             glVertex3f(v1.x, v1.y, v1.z);
             glVertex3f(v2.x, v2.y, v2.z);
@@ -207,7 +208,7 @@ int main(int argc, const char * argv[])
         lastTime = currentTime;
         // run the Verlet functions
         if (!pause) {
-            integrate_momentum(p, e, NUM_PARTICLES);
+            // integrate_momentum(p, e, NUM_PARTICLES);
             satisfy_constraints(p, e, NUM_EDGES, 1.0);
             resolve_collision(p,e, NUM_PARTICLES);
         }

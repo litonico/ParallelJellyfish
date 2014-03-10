@@ -7,7 +7,7 @@
 
 void precompute_stiffness(FacePair facepairs[]){
     
-    // populate array of FacePairs
+    // Populate array of FacePairs
     // with appropriate data
 
     for (int i = 0; i < num_facepairs; i++){
@@ -25,9 +25,6 @@ void precompute_stiffness(FacePair facepairs[]){
     }
 }
 
-// Evaluate the jacobian contribution
-//
-//
 void runtime_stiffness(void) {
     
     // Evaluate bending vector R
@@ -46,3 +43,4 @@ void runtime_stiffness(void) {
 // F_B
 // F_C
 // F_D
+}
