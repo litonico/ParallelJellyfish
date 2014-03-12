@@ -7,11 +7,12 @@
 //
 
 
-#include "vectormath.c"
+#include <stdlib.h>
+#include "vectormath.h"
 #include "verlet.h"
 #define num_iterations 1
 
-
+vector gravity = {0.0, -0.01, 0.0};
 
 void jitter_x(Particle verts[], float coef, int num_verts) {
     for (int i = 0; i < num_verts; i++) {
@@ -21,7 +22,17 @@ void jitter_x(Particle verts[], float coef, int num_verts) {
 }
 
 
-void integrate_momentum(Particle verts[], Edge edges[], int num_verts){
+void apply_gravity(Particle verts[], int num_verts){
+    
+    // adds acceleration due to gravity to each vertex
+
+    for (int i = 0; i < num_verts; i++) {
+        vector *accel = &(verts[i].accel);
+        *accel = v_add(*accel, gravity);
+    }
+}
+
+void integrate_momentum(Particle verts[], int num_verts, float timestep){
     // For each vertex, calculates its change in 
     // position based on Verlet integration
     
@@ -33,9 +44,8 @@ void integrate_momentum(Particle verts[], Edge edges[], int num_verts){
         // declared on the heap, has the contents of x (a vector)
         vector *prev_x = &(verts[i].prev_pos); 
         // points to the prev_pos of the i'th elem. of verts
-        
-        // TODO: acceleration 
-        *x = v_add(*x, v_sub(*x, *prev_x)); // contents of x are:
+        *x = v_add(v_add(*x, v_sub(*x, *prev_x)), 
+                v_scalar_mul(verts[i].accel, timestep*timestep));
         //x += x - prev_x + accel*timestep^2
         *prev_x = temp; 
         // the contents of prev_x are set to be what was stored in temp
@@ -68,8 +78,8 @@ void satisfy_constraints(Particle verts[], Edge edges[], int num_edges, float co
                                         ((restlen - len)/2.0)
                                     );
              
-            *x2 = v_add(*x2, v_scalar_mul(difference, coef));
-            *x1 = v_sub(*x1, v_scalar_mul(difference, coef));
+            *x2 = v_scalar_mul(v_add(*x2, v_scalar_mul(difference, coef)), verts[current_edge->b].invmass);
+            *x1 = v_scalar_mul(v_sub(*x1, v_scalar_mul(difference, coef)), verts[current_edge->a].invmass);
                 
         }
     }

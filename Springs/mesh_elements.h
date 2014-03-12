@@ -5,6 +5,8 @@
 typedef struct {
     vector pos;
     vector prev_pos;
+    vector accel;
+    float invmass;
 } Particle;
 
 typedef struct {

@@ -9,15 +9,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GLFW/glfw3.h>
-
 #include "mesh_elements.h"
-#include "verlet.c"
+#include "verlet.h"
 
 // TODO: refactor OpenGL into a separate file
 GLfloat zoom = 2.f;
-float currentTime;
+double currentTime;
 float lastTime;
-float deltaTime;
+double deltaTime;
 float position;
 GLfloat speed = 3.f;
 float mouseSpeed = 0.005;
@@ -90,6 +89,13 @@ int main(int argc, const char * argv[])
                   "%lf %lf %lf", 
                 &p[i].pos.x, &p[i].pos.y, &p[i].pos.z,
                 &p[i].prev_pos.x, &p[i].prev_pos.y, &p[i].prev_pos.z);
+
+        if (i == 0){
+            p[i].invmass = 0.f;
+        }
+        else {
+            p[i].invmass = 1.f;
+        }
     }
 
 
@@ -132,7 +138,7 @@ int main(int argc, const char * argv[])
     int width, height;
     double xpos, ypos;
 
-    currentTime = glfwGetTime();
+    lastTime = 0.0;
 
     GLFWwindow* window;
 
@@ -159,6 +165,8 @@ int main(int argc, const char * argv[])
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+
+        currentTime = glfwGetTime();
         deltaTime = currentTime - lastTime;
 
         // The camera needs to be independent of the
@@ -208,9 +216,10 @@ int main(int argc, const char * argv[])
         lastTime = currentTime;
         // run the Verlet functions
         if (!pause) {
-            // integrate_momentum(p, e, NUM_PARTICLES);
+            apply_gravity(p, NUM_PARTICLES);
+            integrate_momentum(p, NUM_PARTICLES, deltaTime);
             satisfy_constraints(p, e, NUM_EDGES, 1.0);
-            resolve_collision(p,e, NUM_PARTICLES);
+            resolve_collision(p, e, NUM_PARTICLES);
         }
 
 /*

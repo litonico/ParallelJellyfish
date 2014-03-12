@@ -17,11 +17,11 @@ typedef struct {
 
 
 double v_dot(vector v1, vector v2);
-vector v_add();
-vector v_sub();
-vector v_scalar_mul();
-double v_magnitude();
-vector v_normalize();
+vector v_add(vector v1, vector v2);
+vector v_sub(vector v1, vector v2);
+vector v_scalar_mul(vector v, double s);
+double v_magnitude(vector v);
+vector v_normalize(vector v);
 #endif
 
 
