@@ -11,7 +11,6 @@
 #include <GLFW/glfw3.h>
 #include "mesh_elements.h"
 #include "verlet.h"
-
 // TODO: refactor OpenGL into a separate file
 GLfloat zoom = 2.f;
 double currentTime;
@@ -25,7 +24,7 @@ float direction;
 
 
 unsigned char pause = 0;
-
+unsigned char fixpt_on = 0;
 static void key_callback(
         GLFWwindow* window, int key, int scancode, int action, int mods) {
 
@@ -90,7 +89,7 @@ int main(int argc, const char * argv[])
                 &p[i].pos.x, &p[i].pos.y, &p[i].pos.z,
                 &p[i].prev_pos.x, &p[i].prev_pos.y, &p[i].prev_pos.z);
 
-        if (i == 0){
+        if (i == 0 && fixpt_on){
             p[i].invmass = 0.f;
         }
         else {
@@ -105,7 +104,7 @@ int main(int argc, const char * argv[])
     FILE *fe;
     fe = fopen("../data/edges", "r+");
 
-    if( fe == NULL){
+    if (fe == NULL){
         printf("No such file\n");
         return -1;
     }
@@ -216,7 +215,7 @@ int main(int argc, const char * argv[])
         lastTime = currentTime;
         // run the Verlet functions
         if (!pause) {
-            apply_gravity(p, NUM_PARTICLES);
+            // apply_gravity(p, NUM_PARTICLES);
             integrate_momentum(p, NUM_PARTICLES, deltaTime);
             satisfy_constraints(p, e, NUM_EDGES, 1.0);
             resolve_collision(p, e, NUM_PARTICLES);

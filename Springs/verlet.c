@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include "vectormath.h"
 #include "verlet.h"
-#define num_iterations 1
+#define num_iterations 2
 
 vector gravity = {0.0, -0.01, 0.0};
 
