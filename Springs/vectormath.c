@@ -12,7 +12,7 @@
 
 double vdot(vector v1, vector v2){
     double ret;
-    ret += v1.x * v2.x;
+    ret = v1.x * v2.x;
     ret += v1.y * v2.y;
     ret += v1.z * v2.z;
     
