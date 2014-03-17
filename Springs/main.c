@@ -70,7 +70,7 @@ int main(int argc, const char * argv[])
     fv = fopen("../data/verts", "r+");
 
     if( fv == NULL){
-        printf("No such file\n");
+        printf("Cannot find file ../data/verts\n");
         exit(-1);
     }
 
@@ -105,7 +105,7 @@ int main(int argc, const char * argv[])
     fe = fopen("../data/edges", "r+");
 
     if (fe == NULL){
-        printf("No such file\n");
+        printf("Cannot find file ../data/edges\n");
         return -1;
     }
 

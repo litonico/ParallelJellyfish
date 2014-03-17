@@ -13,10 +13,10 @@ CFLAGS ?= -c -std=c99 -Wall
 all: Jellyfish
 
 Jellyfish: main.o vectormath.o verlet.o
-	$(CC) $(GLFW) -o Jellyfish main.o vectormath.o verlet.o  
+	$(CC) -o Jellyfish main.o vectormath.o verlet.o $(GLFW) 
 
-main.o: main.c mesh_elements.h verlet.h
-	$(CC) $(CFLAGS) main.c
+main.o: main.c mesh_elements.h verlet.h vectormath.h
+	$(CC) $(CFLAGS) main.c 
 
 vectormath.o: vectormath.c vectormath.h
 	$(CC) $(CFLAGS) vectormath.c 
