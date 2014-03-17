@@ -1,9 +1,17 @@
 .DS_Store
+// Intermediate files
 *.pyc
 *.swp
 *.swo
 *.out
 *.o
 
+// Data files
 verts
 edges
+
+// Executable file
+Jellyfish
+
+// Utilities
+graphics.py
