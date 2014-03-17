@@ -22,9 +22,10 @@ float mouseSpeed = 0.005;
 float right;
 float direction;
 
-
 unsigned char pause = 0;
 unsigned char fixpt_on = 0;
+unsigned char gravity_on = 0;
+
 static void key_callback(
         GLFWwindow* window, int key, int scancode, int action, int mods) {
 
@@ -215,7 +216,11 @@ int main(int argc, const char * argv[])
         lastTime = currentTime;
         // run the Verlet functions
         if (!pause) {
-            // apply_gravity(p, NUM_PARTICLES);
+
+            if (gravity_on){
+                    apply_gravity(p, NUM_PARTICLES);
+            }
+
             integrate_momentum(p, NUM_PARTICLES, deltaTime);
             satisfy_constraints(p, e, NUM_EDGES, 1.0);
             resolve_collision(p, e, NUM_PARTICLES);
