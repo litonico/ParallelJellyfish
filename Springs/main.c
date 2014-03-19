@@ -11,55 +11,13 @@
 #include <GLFW/glfw3.h>
 #include "mesh_elements.h"
 #include "verlet.h"
+#include "draw.h"
+
 // TODO: refactor OpenGL into a separate file
-GLfloat zoom = 2.f;
-double currentTime;
-float lastTime;
-double deltaTime;
-float position;
-GLfloat speed = 3.f;
-float mouseSpeed = 0.005;
-float right;
-float direction;
 
 unsigned char pause = 0;
 unsigned char fixpt_on = 0;
 unsigned char gravity_on = 0;
-
-static void key_callback(
-        GLFWwindow* window, int key, int scancode, int action, int mods) {
-
-    // if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        // glfwSetWindowShouldClose(window, GL_TRUE);
-    switch (key)
-    {
-        case GLFW_KEY_ESCAPE:
-            glfwSetWindowShouldClose(window, GL_TRUE);
-            break;
-        case GLFW_KEY_UP:
-            zoom -= 0.25f;
-            if (zoom < 0.f)
-                zoom = 0.f;
-            break;
-        case GLFW_KEY_DOWN:
-            zoom += 0.25f;
-            break;
-        case GLFW_KEY_A:
-            position -= right * deltaTime * speed;
-        case GLFW_KEY_D:
-            position += right * deltaTime * speed;
-        case GLFW_KEY_W:
-            position += direction * deltaTime * speed;
-        case GLFW_KEY_S:
-            position += direction * deltaTime * speed;
-        case GLFW_KEY_U:
-            pause = 0;
-        case GLFW_KEY_P:
-            pause = 1;
-        default:
-            break;
-    }
-}
 
 int main(int argc, const char * argv[])
 {
@@ -134,11 +92,6 @@ int main(int argc, const char * argv[])
     // OPENGL 
     
 
-    float ratio;
-    int width, height;
-    double xpos, ypos;
-
-    lastTime = 0.0;
 
     GLFWwindow* window;
 
@@ -166,40 +119,7 @@ int main(int argc, const char * argv[])
     while (!glfwWindowShouldClose(window))
     {
 
-        currentTime = glfwGetTime();
-        deltaTime = currentTime - lastTime;
-
-        // The camera needs to be independent of the
-        // view ratio of view window
-        glfwGetFramebufferSize(window, &width, &height);
-        ratio = width / (float) height;
-
-        //Mouse tracking for camera
-        glfwGetCursorPos(window, &xpos, &ypos);
-        // TODO: Make this work
-        // horizontalAngle += mouseSpeed * deltaTime * float(width/2.f - xpos );
-        // verticalAngle += mouseSpeed * deltaTime * float(height/2.f - ypos );
-        
-        // Initialize the viewport
-        glViewport(0, 0, width, height);
-        glClear(GL_COLOR_BUFFER_BIT);
-        
-        /* CAMERA */
-
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity(); //Push identity matrix
-        // glTranslatef(0, 0, -zoom); // Zoom controls: UP / DOWN
-
-        // glFrustum(.5, -.5, -.5 * ratio, .5 * ratio, 1, 50);
-        glOrtho(-ratio*10, ratio*10, -1.f*10, 1.f*10, 500.f, -500.f);
-        //
-        glMatrixMode(GL_MODELVIEW);
-
-        glLoadIdentity();
-        // glTranslatef(0, 0, -zoom);
-
-        glRotatef((float)/* glfwGetTime() * */ 50.f, 50.f, 50.f, 1.f);
-        // glClearColor(0.0, 0.0, 0.0, 1.0);
+        draw(window);
 
         glBegin(GL_LINES);
         for (int i = 0; i < NUM_EDGES; ++i){
@@ -213,7 +133,6 @@ int main(int argc, const char * argv[])
         }
         glEnd();
 
-        lastTime = currentTime;
         // run the Verlet functions
         if (!pause) {
 
