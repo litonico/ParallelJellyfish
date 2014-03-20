@@ -11,8 +11,8 @@
 #include <math.h>
 
 double vdot(vector v1, vector v2){
-    double ret;
-    ret = v1.x * v2.x;
+    double ret = 0.0;
+    ret += v1.x * v2.x;
     ret += v1.y * v2.y;
     ret += v1.z * v2.z;
     
@@ -43,6 +43,15 @@ vector v_scalar_mul(vector v, double s){
     ret.y = v.y * s;
     ret.z = v.z * s;
     
+    return ret;
+}
+
+vector v_cross(vector v1, vector v2){
+    vector ret;
+    ret.x = v1.y*v2.z + v1.z*v2.y;
+    ret.y = v1.z*v2.x + v1.x*v2.z;
+    ret.z = v1.x*v2.y + v1.y*v2.x;
+
     return ret;
 }
 

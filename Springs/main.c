@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 #include "mesh_elements.h"
 #include "verlet.h"
@@ -15,9 +16,13 @@
 
 // TODO: refactor OpenGL into a separate file
 
-unsigned char pause = 0;
+unsigned char pause = 1;
 unsigned char fixpt_on = 0;
 unsigned char gravity_on = 0;
+
+double currentTime = 0.0;
+float lastTime = 0.0;
+double deltaTime;
 
 int main(int argc, const char * argv[])
 {
@@ -118,8 +123,10 @@ int main(int argc, const char * argv[])
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        currentTime = glfwGetTime();
+        deltaTime = currentTime - lastTime;
 
-        draw(window);
+        draw(window, deltaTime);
 
         glBegin(GL_LINES);
         for (int i = 0; i < NUM_EDGES; ++i){
@@ -145,15 +152,8 @@ int main(int argc, const char * argv[])
             resolve_collision(p, e, NUM_PARTICLES);
         }
 
-/*
-        glBegin(GL_POINTS);
-        glColor3f( 0.95, 0.207, 0.031);
-        for (int i = 0; i < NUM_PARTICLES; ++i){
-            vector v = p[i].pos;
-            glVertex3f(v.x, v.y, v.z);
-        }
-        glEnd();
-*/
+        lastTime = currentTime;
+
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 

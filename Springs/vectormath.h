@@ -20,6 +20,7 @@ double v_dot(vector v1, vector v2);
 vector v_add(vector v1, vector v2);
 vector v_sub(vector v1, vector v2);
 vector v_scalar_mul(vector v, double s);
+vector v_cross(vector v1, vector v2);
 double v_magnitude(vector v);
 vector v_normalize(vector v);
 #endif
