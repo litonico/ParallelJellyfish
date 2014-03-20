@@ -16,7 +16,7 @@
 
 // TODO: refactor OpenGL into a separate file
 
-unsigned char pause = 1;
+unsigned char pause = 0;
 unsigned char fixpt_on = 0;
 unsigned char gravity_on = 0;
 
@@ -87,7 +87,6 @@ int main(int argc, const char * argv[])
                 &e[i].a, &e[i].b, &e[i].length);
     }
 
-    printf("%d\n",NUM_EDGES);
     fclose(fv);
 
 
@@ -117,6 +116,7 @@ int main(int argc, const char * argv[])
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
 
+
     // Jitter once
     jitter_x(p, 0.01, NUM_PARTICLES);
 
@@ -139,6 +139,15 @@ int main(int argc, const char * argv[])
             glVertex3f(v2.x, v2.y, v2.z);
         }
         glEnd();
+
+
+        // Sticky Keys for pause
+        glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+
+        // Check if paused
+        if (glfwGetKey(window, GLFW_KEY_P ) == GLFW_PRESS){
+            pause = ~pause;
+        }
 
         // run the Verlet functions
         if (!pause) {
