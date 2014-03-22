@@ -106,5 +106,5 @@ void draw(GLFWwindow* window, float deltaTime){
             );
         
 
-        glfwSetCursorPos(window, width/2, height/2);
+        // glfwSetCursorPos(window, width/2, height/2);
 }
