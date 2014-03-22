@@ -16,7 +16,7 @@
 
 // TODO: refactor OpenGL into a separate file
 
-unsigned char pause = 0;
+unsigned char pause = 1;
 unsigned char fixpt_on = 0;
 unsigned char gravity_on = 0;
 
@@ -26,6 +26,7 @@ double deltaTime;
 
 int main(int argc, const char * argv[])
 {
+    
     int NUM_PARTICLES;
     int NUM_EDGES;
     
@@ -116,7 +117,6 @@ int main(int argc, const char * argv[])
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
 
-
     // Jitter once
     jitter_x(p, 0.01, NUM_PARTICLES);
 
@@ -140,9 +140,21 @@ int main(int argc, const char * argv[])
         }
         glEnd();
 
+        // TEST AXES
+        glBegin(GL_LINES);
+        for (int i = 0; i < NUM_EDGES; ++i){
+
+            vector v1 = p[e[i].a].pos;
+            vector v2 = p[e[i].b].pos;
+            glColor3f(1.0, 1.0/v_magnitude(v_sub(v1, v2)), 0.0);
+
+            glVertex3f(v1.x, v1.y, v1.z);
+            glVertex3f(v2.x, v2.y, v2.z);
+        }
+
 
         // Sticky Keys for pause
-        glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+        // glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
         // Check if paused
         if (glfwGetKey(window, GLFW_KEY_P ) == GLFW_PRESS){

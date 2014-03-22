@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 float zoom = 2.f;
-float speed = 3.f;
+float speed = 6.f;
 float mouseSpeed = 0.5;
 
 vector position = {0.0, 0.0, 0.0}; // Camera position
@@ -36,51 +36,49 @@ void draw(GLFWwindow* window, float deltaTime){
         glfwGetFramebufferSize(window, &width, &height);
         ratio = width / (float) height;
 
-        //Mouse tracking for camera
+        // Mouse tracking for camera
+        // glfwSetInputMode(window, GL_CURSOR_, GL_TRUE);
         glfwGetCursorPos(window, &xpos, &ypos);
         // Camera controls:
         
-        horizontalAngle += mouseSpeed * deltaTime * (width/2.f - xpos);
-        verticalAngle += mouseSpeed * deltaTime * (height/2.f - ypos);
+        // horizontalAngle += mouseSpeed * deltaTime * ((float) width/2.f - xpos);
+        // verticalAngle += mouseSpeed * deltaTime * ((float) height/2.f - ypos);
         
-        printf("%f\n", horizontalAngle);
-        printf("%f\n", verticalAngle);
+        // printf("w%f\n", ((float) width/2.f - xpos));
+        // printf("h%f\n", verticalAngle);
 
-
-
-        vector direction = {
+        vector direction = { // TODO: THIS THING IS WRONG OR SOMETHING
             cos(verticalAngle) * sin(horizontalAngle), 
             sin(verticalAngle),
             cos(verticalAngle) * cos(horizontalAngle)
         };
 
         vector right = {
-            sin(horizontalAngle - (3.14/2.0)),
+            sin(horizontalAngle - 3.14/2.0),
             0.0,
-            cos(horizontalAngle - (3.14/2.0))
+            cos(horizontalAngle - 3.14/2.0)
         };
+
 
         vector up = v_cross(right, direction);
 
-
+        // printf("%f %f %f\n", up.x, up.y, up.z);
+        
         // Handle movement
         // Move forward
-        if (glfwGetKey(window, GLFW_KEY_UP ) == GLFW_PRESS){
-            printf("up\n");
+        if (glfwGetKey(window, GLFW_KEY_W ) == GLFW_PRESS){
             position = v_add(position, v_scalar_mul(direction, (deltaTime * speed)));
-            printf("%f %f %f\n", 
-                position.x, position.y, position.z);
         }
         // Move backward
-        if (glfwGetKey(window, GLFW_KEY_DOWN ) == GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_S ) == GLFW_PRESS){
             position = v_sub(position, v_scalar_mul(direction, (deltaTime * speed)));
         }
         // Strafe right
-        if (glfwGetKey(window, GLFW_KEY_RIGHT ) == GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_A ) == GLFW_PRESS){
             position = v_add(position, v_scalar_mul(right, (deltaTime * speed)));
         }
         // Strafe left
-        if (glfwGetKey(window, GLFW_KEY_LEFT ) == GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_D ) == GLFW_PRESS){
             position = v_sub(position, v_scalar_mul(right, (deltaTime * speed)));
         }
 
@@ -95,7 +93,7 @@ void draw(GLFWwindow* window, float deltaTime){
 
         // glFrustum(.5, -.5, -.5 * ratio, .5 * ratio, 1, 50);
         // glOrtho(-ratio*10, ratio*10, -1.f*10, 1.f*10, 500.f, -500.f);
-        gluPerspective(FoV, ratio, 0.1f, 50);
+        gluPerspective(FoV, ratio, 0.1f, 100);
         //
         glMatrixMode(GL_MODELVIEW);
 
@@ -103,7 +101,7 @@ void draw(GLFWwindow* window, float deltaTime){
 
         gluLookAt( // look where the mouse is pointing
                 position.x, position.y, position.z, 
-                position.x + direction.x, position.y + direction.y, position.z + direction.z, 
+                0.f, 0.f, 0.f,//position.x + direction.x, position.y + direction.y, position.z + direction.z, 
                 up.x, up.y, up.z
             );
         
