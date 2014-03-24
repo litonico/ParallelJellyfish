@@ -47,6 +47,9 @@ def vertify(out_string, verts):
         out_string += "{0} {1}\n".format(position, position)
     return out_string
 
+ def faceify(out_string, verts): # this one's trickier
+    for i in sorted(edges):
+
 
 if __name__ == "__main__":
     try:
