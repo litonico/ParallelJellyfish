@@ -11,7 +11,7 @@ module. Uses the graphics.py module by John Zelle.
 
 """
 
-verts, edges = make_hyperbolic(20, [2, 3, 3, 3, 3, 3])
+verts, edges = make_hyperbolic(5, [2, 2])
 radius = 2
 scale = 35
 offset = 10

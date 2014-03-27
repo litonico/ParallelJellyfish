@@ -13,6 +13,7 @@
 #include "mesh_elements.h"
 #include "verlet.h"
 #include "draw.h"
+#include "vert_export.h"
 
 // TODO: refactor OpenGL into a separate file
 
@@ -32,7 +33,7 @@ int main(int argc, const char * argv[])
     
     // Open verts file
     FILE *fv;
-    fv = fopen("../data/verts", "r+");
+    fv = fopen("data/verts", "r+");
 
     if( fv == NULL){
         printf("Cannot find file ../data/verts\n");
@@ -67,7 +68,7 @@ int main(int argc, const char * argv[])
     
     // Open edges file
     FILE *fe;
-    fe = fopen("../data/edges", "r+");
+    fe = fopen("data/edges", "r+");
 
     if (fe == NULL){
         printf("Cannot find file ../data/edges\n");
@@ -183,6 +184,9 @@ int main(int argc, const char * argv[])
     }
 
     glfwTerminate();
+
+    // Save the current vertex positions
+    write_verts(p, e, NUM_PARTICLES, NUM_EDGES);
 
     return 0;
 }

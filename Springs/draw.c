@@ -44,10 +44,10 @@ void draw(GLFWwindow* window, float deltaTime){
         // horizontalAngle += mouseSpeed * deltaTime * ((float) width/2.f - xpos);
         // verticalAngle += mouseSpeed * deltaTime * ((float) height/2.f - ypos);
         
-        // printf("w%f\n", ((float) width/2.f - xpos));
-        // printf("h%f\n", verticalAngle);
+        // printf("%f\n", horizontalAngle);
+        // printf("%f\n", verticalAngle);
 
-        vector direction = { // TODO: THIS THING IS WRONG OR SOMETHING
+        vector direction = {
             cos(verticalAngle) * sin(horizontalAngle), 
             sin(verticalAngle),
             cos(verticalAngle) * cos(horizontalAngle)

@@ -10,11 +10,13 @@ typedef struct {
 } Particle;
 
 typedef struct {
-    int a;
-    int b;
+    int a, b;
     double length;
 } Edge;
 
+typedef struct {
+    int v1, v2, v3;
+} Face;
 
 #endif
 
