@@ -121,6 +121,9 @@ int main(int argc, const char * argv[])
     // Jitter once
     jitter_x(p, 0.01, NUM_PARTICLES);
 
+    // Hide cursor
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -142,6 +145,7 @@ int main(int argc, const char * argv[])
         glEnd();
 
         // TEST AXES
+        /*
         glBegin(GL_LINES);
         for (int i = 0; i < NUM_EDGES; ++i){
 
@@ -153,6 +157,7 @@ int main(int argc, const char * argv[])
             glVertex3f(v2.x, v2.y, v2.z);
         }
 
+        */
 
         // Sticky Keys for pause
         // glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);

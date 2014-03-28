@@ -18,8 +18,8 @@ int width, height;
 double xpos, ypos;
 float ratio;
 
-float horizontalAngle = 3.14f;
-float verticalAngle = 0.f;
+float azimuth = 0.f;
+float altitude = 3.14f;
 
 
 void key_callback(
@@ -39,24 +39,27 @@ void draw(GLFWwindow* window, float deltaTime){
         // Mouse tracking for camera
         // glfwSetInputMode(window, GL_CURSOR_, GL_TRUE);
         glfwGetCursorPos(window, &xpos, &ypos);
+
+        // printf("%f %f %d %d\n", xpos, ypos, width, height);
+
         // Camera controls:
+        azimuth += mouseSpeed * deltaTime *  ((float) width/2.f - xpos);
+        altitude += mouseSpeed * deltaTime * ((float) height/2.f - ypos);
         
-        // horizontalAngle += mouseSpeed * deltaTime * ((float) width/2.f - xpos);
-        // verticalAngle += mouseSpeed * deltaTime * ((float) height/2.f - ypos);
-        
-        // printf("%f\n", horizontalAngle);
-        // printf("%f\n", verticalAngle);
+        // printf("%f\n", (width/2.f - (float) xpos));
+        // printf("%f\n", (height/2.f - (float) ypos));
+        // printf("%f\n", altitude);
 
         vector direction = {
-            cos(verticalAngle) * sin(horizontalAngle), 
-            sin(verticalAngle),
-            cos(verticalAngle) * cos(horizontalAngle)
+            cos(altitude) * sin(azimuth), 
+            sin(altitude),
+            cos(altitude) * cos(azimuth)
         };
 
         vector right = {
-            sin(horizontalAngle - 3.14/2.0),
+            sin(azimuth - 3.14/2.0),
             0.0,
-            cos(horizontalAngle - 3.14/2.0)
+            cos(azimuth - 3.14/2.0)
         };
 
 
@@ -81,6 +84,14 @@ void draw(GLFWwindow* window, float deltaTime){
         if (glfwGetKey(window, GLFW_KEY_D ) == GLFW_PRESS){
             position = v_sub(position, v_scalar_mul(right, (deltaTime * speed)));
         }
+        // Strafe down
+        if (glfwGetKey(window, GLFW_KEY_SPACE ) == GLFW_PRESS){
+            position = v_add(position, v_scalar_mul(up, (deltaTime * speed)));
+        }
+        // Strafe up
+        if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT ) == GLFW_PRESS){
+            position = v_sub(position, v_scalar_mul(up, (deltaTime * speed)));
+        }
 
         // Initialize the viewport
         glViewport(0, 0, width, height);
@@ -101,10 +112,10 @@ void draw(GLFWwindow* window, float deltaTime){
 
         gluLookAt( // look where the mouse is pointing
                 position.x, position.y, position.z, 
-                0.f, 0.f, 0.f,//position.x + direction.x, position.y + direction.y, position.z + direction.z, 
+                position.x + direction.x, position.y + direction.y, position.z + direction.z, 
                 up.x, up.y, up.z
             );
         
 
-        // glfwSetCursorPos(window, width/2, height/2);
+        glfwSetCursorPos(window, width/2, height/2);
 }
