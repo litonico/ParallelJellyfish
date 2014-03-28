@@ -19,7 +19,7 @@ double xpos, ypos;
 float ratio;
 
 float azimuth = 0.f;
-float altitude = 3.14f;
+float altitude = 3.14159/2.0;
 
 
 void key_callback(
@@ -51,15 +51,15 @@ void draw(GLFWwindow* window, float deltaTime){
         // printf("%f\n", altitude);
 
         vector direction = {
-            cos(altitude) * sin(azimuth), 
-            sin(altitude),
-            cos(altitude) * cos(azimuth)
+            sin(altitude) * cos(azimuth),
+            cos(azimuth),
+            sin(altitude) * sin(azimuth)
         };
 
         vector right = {
-            sin(azimuth - 3.14/2.0),
+            sin(azimuth),
             0.0,
-            cos(azimuth - 3.14/2.0)
+            cos(azimuth - 3.14/2.0) 
         };
 
 
