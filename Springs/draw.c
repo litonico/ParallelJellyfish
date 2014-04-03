@@ -1,3 +1,6 @@
+// OpenGL functions that direct drawing and 
+// camera controls
+
 #include "draw.h"
 #include "vectormath.h"
 #include <math.h>

@@ -13,7 +13,7 @@ typedef struct {
 
 void precompute_stiffness(Particle verts[], FacePair facepairs[]);
 
-void runtime_stiffness(FacePair[] facepairs);
+void runtime_stiffness(FacePair[] facepairs, double lambda);
 
 
 #endif
