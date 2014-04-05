@@ -2,14 +2,13 @@
 #define bending_stiffness_h
 #include "mesh_elements.h"
 
-double N_A, N_B, N_C, N_D;
 
+// Long name, but harmless; a struct to store const data
+// about the stiffness of the mesh
 typedef struct {
-    int A, B, C, D; // vertex numbers
-    double alpha_A, alpha_B, alpha_C, alpha_D;
-    double lambda;
-    // Jacobian matrix?
-} FacePair;
+    const double alpha_A, alpha_B, alpha_C, alpha_D;
+    const double lambda;
+} StiffnessDataContainer;
 
 void precompute_stiffness(Particle verts[], FacePair facepairs[]);
 

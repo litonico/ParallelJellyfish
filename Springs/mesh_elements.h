@@ -15,8 +15,11 @@ typedef struct {
 } Edge;
 
 typedef struct {
-    int v1, v2, v3;
-} Face;
+    int A, B, C, D; 
+    // CD is the internal edge 
+    // A and B are the outer verts
+    
+} FacePair;
 
 #endif
 

@@ -17,7 +17,7 @@
 
 // TODO: refactor OpenGL into a separate file
 
-unsigned char pause = 1;
+unsigned char pause = 0;
 unsigned char fixpt_on = 0;
 unsigned char gravity_on = 0;
 
