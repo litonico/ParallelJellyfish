@@ -10,36 +10,43 @@
 // end up as an equilateral triangle; otherwise, no luck.
 
 #include "bending_stiffness.h"
+#include <math.h>
+#include <stdio.h>
 
-struct StiffnessData precompute_stiffness(double stiffness_mu){
+void precompute_stiffness(double stiffness_mu, StiffnessDataContainer *StiffnessConstants){
 
-    StiffnessDataContainer StiffnessConstants; 
+    // The 'ideal' resting position of a face-pair.
+    vector D = {0, 0, 0};
+    vector C = {0, 0, 1};
+    vector A = {0, 0.5*sqrt(3), 0.5};
+    vector B = {0, -0.5*sqrt(3), 0.5};
 
-    N_A = v_magnitude(v_cross(v_sub(A, C), v_sub(A, D)));
-    N_B = v_magnitude(v_cross(v_sub(B, D), v_sub(B, C)));
-    N_C = v_magnitude(v_cross(v_sub(C, B), v_sub(C, A)));
-    N_D = v_magnitude(v_cross(v_sub(D, A), v_sub(D, B)));
-    StiffnessConstants->alpha_A = N(B)/(N(A) + N(B))
-    StiffnessConstants->alpha_B = N(A)/(N(A) + N(B))
-    StiffnessConstants->alpha_C = N(D)/(N(C) + N(D))
-    StiffnessConstants->alpha_D = N(C)/(N(C) + N(D))
+    double N_A = v_magnitude(v_cross(v_sub(A, C), v_sub(A, D)));
+    double N_B = v_magnitude(v_cross(v_sub(B, D), v_sub(B, C)));
+    double N_C = v_magnitude(v_cross(v_sub(C, B), v_sub(C, A)));
+    double N_D = v_magnitude(v_cross(v_sub(D, A), v_sub(D, B)));
+
+    printf("%f %f %f %F", N_A, N_B, N_C, N_D);
+
+    StiffnessConstants->alpha_A = N_B/(N_A + N_B);
+    StiffnessConstants->alpha_B = N_A/(N_A + N_B);
+    StiffnessConstants->alpha_C = N_D/(N_C + N_D);
+    StiffnessConstants->alpha_D = N_C/(N_C + N_D);
 
     // Evaluate lambda, the coefficient of stiffness
-    StiffnessConstants->lambda = edgelen * 
-                                 stiffness_mu * 
-                                 (2.0/3.0) * 
-                                 (N_A + N_B)/((N_A*N_B)*(N_A*N_B));
+    StiffnessConstants->lambda = stiffness_mu * 
+                                (2.0/3.0) * 
+                                (N_A + N_B)/((N_A*N_B)*(N_A*N_B));
 
-    return StiffnessConstants
 
 }
 
-void runtime_stiffness(Particle verts[], FacePair facepairs[], double lambda) {
+void runtime_stiffness(Particle verts[], FacePair facepairs[], int num_facepairs, StiffnessDataContainer *constants) {
 
     for (int i = 0; i < num_facepairs; i++){
         FacePair *facepair = &facepairs[i];
 
-        double lambda = facepair->lambda; // probably should be a global
+        double lambda = constants->lambda;
 
         vector *A = &(verts[facepair->A].pos);
         vector *B = &(verts[facepair->B].pos);
@@ -49,27 +56,27 @@ void runtime_stiffness(Particle verts[], FacePair facepairs[], double lambda) {
         // Evaluate bending vector R
         vector bending_vector = v_add(
             v_add(
-                v_scalar_mul(A, alpha_A)
-                v_scalar_mul(B, alpha_B)
+                v_scalar_mul(*A, constants->alpha_A),
+                v_scalar_mul(*B, constants->alpha_B)
             ),
             v_add(
-                v_scalar_mul(C, alpha_C),
-                v_scalar_mul(D, alpha_D)
+                v_scalar_mul(*C, constants->alpha_C),
+                v_scalar_mul(*D, constants->alpha_D)
             )
         );
 
         // Apply the bending forces to the particles
-        force_A = v_scalar_mul(bending_vector, -lambda * facepair->alpha_A)
-        *A = v_add(*A, force_A)
+        vector force_A = v_scalar_mul(bending_vector, -lambda * constants->alpha_A);
+        *A = v_add(*A, force_A);
 
-        force_B = v_scalar_mul(bending_vector, -lambda * facepair->alpha_B)
-        *B = v_add(*B, force_B)
+        vector force_B = v_scalar_mul(bending_vector, -lambda * constants->alpha_B);
+        *B = v_add(*B, force_B);
 
-        force_C = v_scalar_mul(bending_vector, -lambda * facepair->alpha_C)
-        *C = v_add(*C, force_C)
+        vector force_C = v_scalar_mul(bending_vector, -lambda * constants->alpha_C);
+        *C = v_add(*C, force_C);
 
-        force_D = v_scalar_mul(bending_vector, -lambda * facepair->alpha_D)
-        *D = v_add(*D, force_D)
+        vector force_D = v_scalar_mul(bending_vector, -lambda * constants->alpha_D);
+        *D = v_add(*D, force_D);
 
     }
 }

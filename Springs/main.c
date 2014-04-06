@@ -14,12 +14,16 @@
 #include "verlet.h"
 #include "draw.h"
 #include "vert_export.h"
+#include "bending_stiffness.h"
 
 // TODO: refactor OpenGL into a separate file
 
 unsigned char pause = 0;
 unsigned char fixpt_on = 0;
 unsigned char gravity_on = 0;
+
+// Coefficient of Stiffness
+double stiffness_mu = 0.1;
 
 double currentTime = 0.0;
 float lastTime = 0.0;
@@ -91,7 +95,17 @@ int main(int argc, const char * argv[])
 
     fclose(fv);
 
+    
+    // TODO: Get Face Pairs
 
+    // Allocate memory for stiffness constants
+    StiffnessDataContainer* StiffnessConstants = 
+        (StiffnessDataContainer*) malloc(sizeof(StiffnessDataContainer));
+
+    precompute_stiffness(stiffness_mu, StiffnessConstants);
+
+
+        
 /* ----------------------------------------------*/
 
 

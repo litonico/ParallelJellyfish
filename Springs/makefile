@@ -14,10 +14,9 @@ CFLAGS = -c -std=c99 -Wall -Wno-deprecated-declarations
 
 # all: Jellyfish
 
-TempStiffness: bending_stiffness.o
-
-Jellyfish: main.o vectormath.o verlet.o draw.o vert_export.o
-	$(CC) -o Jellyfish main.o vectormath.o verlet.o draw.o vert_export.o $(GLFW)
+Jellyfish: main.o vectormath.o verlet.o draw.o vert_export.o bending_stiffness.o
+	$(CC) -o Jellyfish \
+		main.o vectormath.o verlet.o draw.o vert_export.o bending_stiffness.o $(GLFW)
 
 main.o: main.c mesh_elements.h verlet.h vectormath.h draw.h vert_export.h
 	$(CC) $(CFLAGS) main.c 
