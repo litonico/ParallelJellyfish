@@ -1,22 +1,30 @@
+// Main
+// Read in vertex, edge, and face data, allocate memory,
+// create OpenGL context (through GLFW) and run the 
+// simulations outlined in verlet.c
 //
-//  main.c
-//  Hyperbolic_C
+// Created by Lito Nicolai on 2/6/14.
+// Copyright (c) 2014 Lito Nicolai. All rights reserved.
 //
-//  Created by Lito Nicolai on 2/6/14.
-//  Copyright (c) 2014 Lito Nicolai. All rights reserved.
+//
+//
+// TODO:
+// Code to populate facepair array
+// Check if facepairs are correct
+// Why is the crossproduct of the precomupte_stiffness 0.0? AAAA
+// Debug EVERYTHING
+//
 //
 
 #include <stdio.h>
 #include <stdlib.h>
-#define GLFW_INCLUDE_GLU
+#define GLFW_INCLUDE_GLU // For math
 #include <GLFW/glfw3.h>
 #include "mesh_elements.h"
 #include "verlet.h"
 #include "draw.h"
 #include "vert_export.h"
 #include "bending_stiffness.h"
-
-// TODO: refactor OpenGL into a separate file
 
 unsigned char pause = 0;
 unsigned char fixpt_on = 0;

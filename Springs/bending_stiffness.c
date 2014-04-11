@@ -26,7 +26,7 @@ void precompute_stiffness(double stiffness_mu, StiffnessDataContainer *Stiffness
     double N_C = v_magnitude(v_cross(v_sub(C, B), v_sub(C, A)));
     double N_D = v_magnitude(v_cross(v_sub(D, A), v_sub(D, B)));
 
-    printf("%f %f %f %F", N_A, N_B, N_C, N_D);
+    printf("%f %f %f %f", N_A, N_B, N_C, N_D);
 
     StiffnessConstants->alpha_A = N_B/(N_A + N_B);
     StiffnessConstants->alpha_B = N_A/(N_A + N_B);
