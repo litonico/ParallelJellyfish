@@ -12,7 +12,7 @@ CFLAGS_STRICT = -std=c99 -pipe -O2 -Werror -Wall -Wpedantic \
 # So, we'll use -Wno-deprecated as long as we can get away with it.
 CFLAGS = -c -std=c99 -Wall -Wno-deprecated-declarations
 
-# all: Jellyfish
+all: Jellyfish
 
 Jellyfish: main.o vectormath.o verlet.o draw.o vert_export.o bending_stiffness.o
 	$(CC) -o Jellyfish \

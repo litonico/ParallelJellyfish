@@ -112,6 +112,7 @@ int main(int argc, const char * argv[])
 
     precompute_stiffness(stiffness_mu, StiffnessConstants);
 
+    return 0;
 
         
 /* ----------------------------------------------*/

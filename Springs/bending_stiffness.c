@@ -16,10 +16,13 @@
 void precompute_stiffness(double stiffness_mu, StiffnessDataContainer *StiffnessConstants){
 
     // The 'ideal' resting position of a face-pair.
-    vector D = {0, 0, 0};
-    vector C = {0, 0, 1};
-    vector A = {0, 0.5*sqrt(3), 0.5};
-    vector B = {0, -0.5*sqrt(3), 0.5};
+    vector D = {0.0, 0.0, 0.0};
+    vector C = {0.0, 0.0, 1.0};
+    vector A = {0.0, 0.5*sqrt(3), 0.5};
+    vector B = {0.0, -0.5*sqrt(3), 0.5};
+
+    vector debug_a = v_cross(v_sub(A, D), v_sub(A, C));
+    printf("%f %f %f\n", debug_a.x, debug_a.y, debug_a.z);
 
     double N_A = v_magnitude(v_cross(v_sub(A, C), v_sub(A, D)));
     double N_B = v_magnitude(v_cross(v_sub(B, D), v_sub(B, C)));
