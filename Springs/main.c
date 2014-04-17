@@ -31,7 +31,7 @@ unsigned char fixpt_on = 0;
 unsigned char gravity_on = 0;
 
 // Coefficient of Stiffness
-double stiffness_mu = 0.001;
+double stiffness_mu = 0.0001;
 
 double currentTime = 0.0;
 float lastTime = 0.0;
@@ -218,7 +218,7 @@ int main(int argc, const char * argv[])
                     apply_gravity(p, NUM_PARTICLES);
             }
 
-            integrate_momentum(p, NUM_PARTICLES, deltaTime);
+            // integrate_momentum(p, NUM_PARTICLES, deltaTime);
             runtime_stiffness(p, fp, NUM_FACEPAIRS, StiffnessConstants);
             satisfy_constraints(p, e, NUM_EDGES, 1.0);
             resolve_collision(p, e, NUM_PARTICLES);

@@ -21,15 +21,13 @@ void precompute_stiffness(double stiffness_mu, StiffnessDataContainer *Stiffness
 
     StiffnessConstants->alpha_A = N_B/(N_A + N_B);
     StiffnessConstants->alpha_B = N_A/(N_A + N_B);
-    StiffnessConstants->alpha_C = N_D/(N_C + N_D);
-    StiffnessConstants->alpha_D = N_C/(N_C + N_D);
+    StiffnessConstants->alpha_C = -1.0*(N_D/(N_C + N_D));
+    StiffnessConstants->alpha_D = -1.0*(N_C/(N_C + N_D));
 
     // Evaluate lambda, the coefficient of stiffness
     StiffnessConstants->lambda = stiffness_mu * 
                                 (2.0/3.0) * 
                                 (N_A + N_B)/((N_A*N_B)*(N_A*N_B));
-
-    printf("lambda %f", StiffnessConstants->lambda);
 
 }
 
