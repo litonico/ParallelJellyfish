@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define GLFW_INCLUDE_GLU // For math
+#define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 #include "mesh_elements.h"
 #include "verlet.h"
@@ -42,6 +42,7 @@ int main(int argc, const char * argv[])
     
     int NUM_PARTICLES;
     int NUM_EDGES;
+    int NUM_FACEPAIRS;
     
     // Open verts file
     FILE *fv;
@@ -101,11 +102,32 @@ int main(int argc, const char * argv[])
                 &e[i].a, &e[i].b, &e[i].length);
     }
 
-    fclose(fv);
+    fclose(fe);
 
+    // Open facepairs file
+    FILE *ffp;
+    ffp = fopen("data/facepairs", "r+");
+
+    if (ffp == NULL){
+        printf("Cannot find file ../data/facepairs\n");
+        return -1;
+    }
+
+    fscanf(ffp, "%d", &NUM_FACEPAIRS);
+
+    printf("%d\n", NUM_FACEPAIRS);
+
+    FacePair* fp = (FacePair *) calloc(NUM_FACEPAIRS,
+            sizeof(FacePair[NUM_FACEPAIRS]));
+
+    // TODO: THIS
+    for (int i = 0; i < NUM_FACEPAIRS; i++){
+        fscanf(ffp, "%d %d %d %d",
+                &fp[i].A, &fp[i].B, &fp[i].C, &fp[i].D);
+    }
+
+    fclose(ffp);
     
-    // TODO: Get Face Pairs
-
     // Allocate memory for stiffness constants
     StiffnessDataContainer* StiffnessConstants = 
         (StiffnessDataContainer*) malloc(sizeof(StiffnessDataContainer));
@@ -195,7 +217,8 @@ int main(int argc, const char * argv[])
                     apply_gravity(p, NUM_PARTICLES);
             }
 
-            integrate_momentum(p, NUM_PARTICLES, deltaTime);
+            // integrate_momentum(p, NUM_PARTICLES, deltaTime);
+            runtime_stiffness(p, fp, NUM_FACEPAIRS, StiffnessConstants);
             satisfy_constraints(p, e, NUM_EDGES, 1.0);
             resolve_collision(p, e, NUM_PARTICLES);
         }
