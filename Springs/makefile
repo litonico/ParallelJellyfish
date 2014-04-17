@@ -10,7 +10,7 @@ CFLAGS_STRICT = -std=c99 -pipe -O2 -Werror -Wall -Wpedantic \
 
 # GLU is deprecated in 10.9, but the replacement is C++-only;
 # So, we'll use -Wno-deprecated as long as we can get away with it.
-CFLAGS = -c -std=c99 -Wall -Wno-deprecated-declarations
+CFLAGS = -c -g -std=c99 -Wall -Wno-deprecated-declarations
 
 all: Jellyfish
 
@@ -40,4 +40,4 @@ clean:
 	rm *.o Jellyfish
 
 run:
-	cd .. && ./run.py 20 6 6 6 6 6 6 6 6 && cd Springs/
+	cd .. && ./run.py 20 6 6 && cd Springs/

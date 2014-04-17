@@ -29,6 +29,7 @@ void precompute_stiffness(double stiffness_mu, StiffnessDataContainer *Stiffness
                                 (2.0/3.0) * 
                                 (N_A + N_B)/((N_A*N_B)*(N_A*N_B));
 
+    printf("lambda %f", StiffnessConstants->lambda);
 
 }
 
@@ -58,6 +59,7 @@ void runtime_stiffness(Particle verts[], FacePair facepairs[], int num_facepairs
 
         // Apply the bending forces to the particles
         vector force_A = v_scalar_mul(bending_vector, -lambda * constants->alpha_A);
+        //TODO: remove! printf("F_A %f %f %f\n", force_A.x, force_A.y, force_A.z);
         *A = v_add(*A, force_A);
 
         vector force_B = v_scalar_mul(bending_vector, -lambda * constants->alpha_B);

@@ -31,7 +31,7 @@ unsigned char fixpt_on = 0;
 unsigned char gravity_on = 0;
 
 // Coefficient of Stiffness
-double stiffness_mu = 0.1;
+double stiffness_mu = 0.001;
 
 double currentTime = 0.0;
 float lastTime = 0.0;
@@ -120,10 +120,11 @@ int main(int argc, const char * argv[])
     FacePair* fp = (FacePair *) calloc(NUM_FACEPAIRS,
             sizeof(FacePair[NUM_FACEPAIRS]));
 
-    // TODO: THIS
     for (int i = 0; i < NUM_FACEPAIRS; i++){
         fscanf(ffp, "%d %d %d %d",
-                &fp[i].A, &fp[i].B, &fp[i].C, &fp[i].D);
+                &fp[i].C, &fp[i].D, &fp[i].A, &fp[i].B);
+        // Important! First two verts in a facepair are 
+        // the internal edge, CD.
     }
 
     fclose(ffp);
@@ -217,7 +218,7 @@ int main(int argc, const char * argv[])
                     apply_gravity(p, NUM_PARTICLES);
             }
 
-            // integrate_momentum(p, NUM_PARTICLES, deltaTime);
+            integrate_momentum(p, NUM_PARTICLES, deltaTime);
             runtime_stiffness(p, fp, NUM_FACEPAIRS, StiffnessConstants);
             satisfy_constraints(p, e, NUM_EDGES, 1.0);
             resolve_collision(p, e, NUM_PARTICLES);
