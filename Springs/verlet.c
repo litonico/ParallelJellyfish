@@ -15,9 +15,20 @@
 vector gravity = {0.0, -0.01, 0.0};
 
 void jitter_x(Particle verts[], float coef, int num_verts) {
+    // Jitter particles along the X axis: when satisfy_constraints
+    // is applied, this will cause less energetic action
+    // and hopefully, fewer self-intersections!
+    
+    float jitter;
     for (int i = 0; i < num_verts; i++) {
-        float rndm = (rand() / (float) RAND_MAX) * (float) coef; 
-        verts[i].pos.x += rndm;
+        if (i % 2 == 0){
+            jitter = 1;
+        }
+        else {
+            jitter = -1;
+        }
+
+        verts[i].pos.x += coef*jitter;
         }
 }
 

@@ -33,7 +33,7 @@ unsigned char gravity_on = 0;
 // Coefficient of Stiffness– lower is less stiff. 
 // Keeping it < 1 is recommended. 0.1 is PLENTY stiff.
 // 0 is completely floppy.
-double stiffness_mu = 0.01;
+double stiffness_mu = 0.05;
 
 // A lower value means slower and finer-grained simulation.
 float simulation_speed = 0.5;
@@ -168,7 +168,7 @@ int main(int argc, const char * argv[])
     glfwSetKeyCallback(window, key_callback);
 
     // Jitter once
-    jitter_x(p, 0.1, NUM_PARTICLES);
+    jitter_x(p, 0.5, NUM_PARTICLES);
 
     // Hide cursor
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
