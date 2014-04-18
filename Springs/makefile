@@ -40,4 +40,4 @@ clean:
 	rm *.o Jellyfish
 
 run:
-	cd .. && ./run.py 20 6 6 6 6 6 6 6 && cd Springs/
+	cd .. && ./run.py 20 6 6 6 6 6 6 6 6 6 && cd Springs/

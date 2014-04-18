@@ -15,8 +15,10 @@
 
 void precompute_stiffness(double stiffness_mu, StiffnessDataContainer *StiffnessConstants){
 
-    // The 'ideal' resting position of a face-pair.
+    // The normals of the verts in the face-pair
     double N_A, N_B, N_C, N_D;
+    // This magic number  is just the cross-product of the sides of 
+    // an equilateral triangle
     N_A = N_B = N_C = N_D =  0.866025;
 
     StiffnessConstants->alpha_A = N_B/(N_A + N_B);
@@ -31,7 +33,10 @@ void precompute_stiffness(double stiffness_mu, StiffnessDataContainer *Stiffness
 
 }
 
-void runtime_stiffness(Particle verts[], FacePair facepairs[], int num_facepairs, StiffnessDataContainer *constants) {
+void runtime_stiffness(Particle verts[], 
+        FacePair facepairs[], int num_facepairs, 
+        StiffnessDataContainer *constants, 
+        float simulation_speed) {
 
     for (int i = 0; i < num_facepairs; i++){
         FacePair *facepair = &facepairs[i];
@@ -57,7 +62,6 @@ void runtime_stiffness(Particle verts[], FacePair facepairs[], int num_facepairs
 
         // Apply the bending forces to the particles
         vector force_A = v_scalar_mul(bending_vector, -lambda * constants->alpha_A);
-        //TODO: remove! printf("F_A %f %f %f\n", force_A.x, force_A.y, force_A.z);
         *A = v_add(*A, force_A);
 
         vector force_B = v_scalar_mul(bending_vector, -lambda * constants->alpha_B);

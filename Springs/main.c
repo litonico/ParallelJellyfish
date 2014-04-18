@@ -33,10 +33,13 @@ unsigned char gravity_on = 0;
 // Coefficient of Stiffness– lower is less stiff. 
 // Keeping it < 1 is recommended. 0.1 is PLENTY stiff.
 // 0 is completely floppy.
-double stiffness_mu = 0.1;
+double stiffness_mu = 0.01;
+
+// A lower value means slower and finer-grained simulation.
+float simulation_speed = 0.5;
 
 double currentTime = 0.0;
-float lastTime = 0.0;
+double lastTime = 0.0;
 double deltaTime;
 
 int main(int argc, const char * argv[])
@@ -71,10 +74,10 @@ int main(int argc, const char * argv[])
                 &p[i].prev_pos.x, &p[i].prev_pos.y, &p[i].prev_pos.z);
 
         if (i == 0 && fixpt_on){
-            p[i].invmass = 0.f;
+            p[i].invmass = 0.0;
         }
         else {
-            p[i].invmass = 1.f;
+            p[i].invmass = 1.0;
         }
     }
 
@@ -165,7 +168,7 @@ int main(int argc, const char * argv[])
     glfwSetKeyCallback(window, key_callback);
 
     // Jitter once
-    jitter_x(p, 0.01, NUM_PARTICLES);
+    jitter_x(p, 0.1, NUM_PARTICLES);
 
     // Hide cursor
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
@@ -217,13 +220,13 @@ int main(int argc, const char * argv[])
         if (!pause) {
 
             if (gravity_on){
-                    apply_gravity(p, NUM_PARTICLES);
+                    apply_gravity(p, NUM_PARTICLES, simulation_speed);
             }
 
-            integrate_momentum(p, NUM_PARTICLES, deltaTime);
-            runtime_stiffness(p, fp, NUM_FACEPAIRS, StiffnessConstants);
-            satisfy_constraints(p, e, NUM_EDGES, 1.0);
-            resolve_collision(p, e, NUM_PARTICLES);
+            integrate_momentum(p, NUM_PARTICLES, deltaTime, simulation_speed);
+            runtime_stiffness(p, fp, NUM_FACEPAIRS, StiffnessConstants, simulation_speed);
+            satisfy_constraints(p, e, NUM_EDGES, simulation_speed);
+            resolve_collision(p, e, NUM_PARTICLES, simulation_speed);
         }
 
         lastTime = currentTime;

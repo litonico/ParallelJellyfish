@@ -6,8 +6,8 @@
 #include <math.h>
 #include <stdio.h>
 
-float zoom = 2.f;
-float speed = 6.f;
+float zoom = 2.0;
+float speed = 15.0;
 float mouseSpeed = 0.5;
 
 vector position = {0.0, 0.0, 0.0}; // Camera position

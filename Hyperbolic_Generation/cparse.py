@@ -25,7 +25,7 @@ def read_input():
 
 def edgify(edges):
     restlen = 1.0
-    diag_len = 1.1412135623
+    diag_len = 1.0  # could also be 1.1412135623
 
     """
     Formats edges to the 'Edge' struct defined in

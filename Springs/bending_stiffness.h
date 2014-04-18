@@ -19,7 +19,8 @@ void runtime_stiffness(
         Particle verts[], 
         FacePair facepairs[], 
         int num_facepairs, 
-        StiffnessDataContainer *constants
+        StiffnessDataContainer *constants,
+        float simulation_speed
         );
 
 #endif

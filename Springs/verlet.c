@@ -22,7 +22,7 @@ void jitter_x(Particle verts[], float coef, int num_verts) {
 }
 
 
-void apply_gravity(Particle verts[], int num_verts){
+void apply_gravity(Particle verts[], int num_verts, float simulation_speed){
     
     // adds acceleration due to gravity to each vertex
 
@@ -32,7 +32,7 @@ void apply_gravity(Particle verts[], int num_verts){
     }
 }
 
-void integrate_momentum(Particle verts[], int num_verts, float timestep){
+void integrate_momentum(Particle verts[], int num_verts, float timestep, float simulation_speed){
     // For each vertex, calculates its change in 
     // position based on Verlet integration
     
@@ -54,7 +54,7 @@ void integrate_momentum(Particle verts[], int num_verts, float timestep){
 }
 
 
-void satisfy_constraints(Particle verts[], Edge edges[], int num_edges, float coef){
+void satisfy_constraints(Particle verts[], Edge edges[], int num_edges, float simulation_speed){
     // Iterates through the edges of the mesh
     // and moves vertices towards or away from
     // each other such that each edge converges
@@ -78,14 +78,14 @@ void satisfy_constraints(Particle verts[], Edge edges[], int num_edges, float co
                                         ((restlen - len)/2.0)
                                     );
              
-            *x2 = v_scalar_mul(v_add(*x2, v_scalar_mul(difference, coef)), verts[current_edge->b].invmass);
-            *x1 = v_scalar_mul(v_sub(*x1, v_scalar_mul(difference, coef)), verts[current_edge->a].invmass);
+            *x2 = v_scalar_mul(v_add(*x2, v_scalar_mul(difference, simulation_speed)), verts[current_edge->b].invmass);
+            *x1 = v_scalar_mul(v_sub(*x1, v_scalar_mul(difference, simulation_speed)), verts[current_edge->a].invmass);
                 
         }
     }
 };
 
-void resolve_collision(Particle verts[], Edge edges[], int num_verts){
+void resolve_collision(Particle verts[], Edge edges[], int num_verts, float simulation_speed){
     
     // If the distance between any two particles is
     // less than some threshold, this function moves
@@ -110,8 +110,8 @@ void resolve_collision(Particle verts[], Edge edges[], int num_verts){
                                         ((collide_dist - len)/2.0)
                                         );
 
-                *x2 = v_add(*x2, difference);
-                *x1 = v_sub(*x1, difference);
+                *x2 = v_add(*x2, v_scalar_mul(difference, simulation_speed));
+                *x1 = v_sub(*x1, v_scalar_mul(difference, simulation_speed));
                 
             }
         }
