@@ -15,7 +15,7 @@ CFLAGS = -c -g -std=c99 -Wall -Wno-deprecated-declarations
 all: Jellyfish
 
 Jellyfish: main.o vectormath.o verlet.o draw.o vert_export.o bending_stiffness.o
-	$(CC) -o Jellyfish \
+	$(CC) -g -o Jellyfish \
 		main.o vectormath.o verlet.o draw.o vert_export.o bending_stiffness.o $(GLFW)
 
 main.o: main.c mesh_elements.h verlet.h vectormath.h draw.h vert_export.h
@@ -40,4 +40,5 @@ clean:
 	rm *.o Jellyfish
 
 run:
-	cd .. && ./run.py 60 6 6 5 5 4 4 3 2 2 && cd Springs/
+	cd .. && ./run.py 20 0 0 0 0 0 0 0 0 0 10 10 10 10 10 10 10 9 8 6 6 5 5 4 4 3 3 2 && cd Springs/
+

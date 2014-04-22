@@ -8,16 +8,12 @@
 //
 //
 //
-// TODO:
-// Code to populate facepair array
-// Check if facepairs are correct
-// Why is the crossproduct of the precomupte_stiffness 0.0? AAAA
-// Debug EVERYTHING
 //
 //
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 #include "mesh_elements.h"
@@ -26,17 +22,18 @@
 #include "vert_export.h"
 #include "bending_stiffness.h"
 
-unsigned char pause = 0;
+unsigned char paused = 1;
+unsigned char momentum = 1;
 unsigned char fixpt_on = 0;
 unsigned char gravity_on = 0;
 
 // Coefficient of Stiffness– lower is less stiff. 
 // Keeping it < 1 is recommended. 0.1 is PLENTY stiff.
 // 0 is completely floppy.
-double stiffness_mu = 0.05;
+double stiffness_mu = 0.01;
 
 // A lower value means slower and finer-grained simulation.
-float simulation_speed = 0.5;
+float simulation_speed = 0.1;
 
 double currentTime = 0.0;
 double lastTime = 0.0;
@@ -176,6 +173,13 @@ int main(int argc, const char * argv[])
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        // TODO: FIX! 
+        /*
+        if (deltaTime < 0.0167){
+            usleep((deltaTime - 0.0167)*1000000);
+        }
+        */
+
         currentTime = glfwGetTime();
         deltaTime = currentTime - lastTime;
 
@@ -194,36 +198,47 @@ int main(int argc, const char * argv[])
         glEnd();
 
         // TEST AXES
-        /*
+        
         glBegin(GL_LINES);
-        for (int i = 0; i < NUM_EDGES; ++i){
+        for (int i = 0; i < 3; ++i){
+            vector v1 = {1.0, 0.0, 0.0};
+            if (i == 1){
+                v1.x = 0.0;
+                v1.y = 1.0;
+                v1.z = 0.0;
+            }
+            if (i == 2){
+                v1.x = 0.0;
+                v1.y = 0.0;
+                v1.z = 1.0;
+            }
 
-            vector v1 = p[e[i].a].pos;
-            vector v2 = p[e[i].b].pos;
-            glColor3f(1.0, 1.0/v_magnitude(v_sub(v1, v2)), 0.0);
-
+            glColor3f(v1.x, v1.y, v1.z);
+            glVertex3f(0.0, 0.0, 0.0);
             glVertex3f(v1.x, v1.y, v1.z);
-            glVertex3f(v2.x, v2.y, v2.z);
         }
+        glEnd();
 
-        */
+       
 
-        // Sticky Keys for pause
+        // Sticky Keys for paused
         // glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-        // Check if paused
+        // Check if pausedd
         if (glfwGetKey(window, GLFW_KEY_P ) == GLFW_PRESS){
-            pause = ~pause;
+            paused = ~paused;
         }
 
         // run the Verlet functions
-        if (!pause) {
+        if (!paused) {
 
             if (gravity_on){
                     apply_gravity(p, NUM_PARTICLES, simulation_speed);
             }
 
-            integrate_momentum(p, NUM_PARTICLES, deltaTime, simulation_speed);
+            if (momentum){
+                integrate_momentum(p, NUM_PARTICLES, deltaTime, simulation_speed);
+            }
             runtime_stiffness(p, fp, NUM_FACEPAIRS, StiffnessConstants, simulation_speed);
             satisfy_constraints(p, e, NUM_EDGES, simulation_speed);
             resolve_collision(p, e, NUM_PARTICLES, simulation_speed);

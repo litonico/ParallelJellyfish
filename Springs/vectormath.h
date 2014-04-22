@@ -23,6 +23,7 @@ vector v_scalar_mul(vector v, double s);
 vector v_cross(vector v1, vector v2);
 double v_magnitude(vector v);
 vector v_normalize(vector v);
+
 #endif
 
 

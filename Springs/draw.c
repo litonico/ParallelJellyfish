@@ -12,17 +12,17 @@ float mouseSpeed = 0.5;
 
 vector position = {0.0, 0.0, 0.0}; // Camera position
 vector right; // Camera right vector
-vector direction; // Camera is pointing towards
-vector up; // Camera upvector
+vector direction = {1.0, 0.0, 0.0}; // Camera is pointing towards
+vector up = {0.0, 1.0, 0.0}; // Camera upvector
 
 float FoV = 45.f; // Field of View
 
 int width, height;
-double xpos, ypos;
+double xpos, ypos = 0.0;
 float ratio;
 
-float azimuth = 0.f;
-float altitude = 3.14159/2.0;
+float azimuth = 0.0;
+float inclination = M_PI/2.0;
 
 
 void key_callback(
@@ -47,28 +47,29 @@ void draw(GLFWwindow* window, float deltaTime){
 
         // Camera controls:
         azimuth += mouseSpeed * deltaTime *  ((float) width/2.f - xpos);
-        altitude += mouseSpeed * deltaTime * ((float) height/2.f - ypos);
+        inclination += mouseSpeed * deltaTime * ((float) height/2.f - ypos);
         
         // printf("%f\n", (width/2.f - (float) xpos));
         // printf("%f\n", (height/2.f - (float) ypos));
-        // printf("%f\n", altitude);
+        // printf("%f\n", inclination);
 
-        vector direction = {
-            sin(altitude) * cos(azimuth),
+        vector direction = { // Where we're looking
+            sin(inclination) * cos(azimuth),
             cos(azimuth),
-            sin(altitude) * sin(azimuth)
+            sin(inclination) * sin(azimuth)
         };
 
         vector right = {
-            sin(azimuth),
+            sin(inclination) * cos(azimuth + M_PI/2.0),
             0.0,
-            cos(azimuth - 3.14/2.0) 
+            sin(inclination) * sin(azimuth + M_PI/2.0)
         };
 
 
-        vector up = v_cross(right, direction);
+        // vector up = v_cross(right, direction);
 
-        // printf("%f %f %f\n", up.x, up.y, up.z);
+        // printf("%f %f %f\n", direction.x, direction.y, direction.z);
+        // printf("%f\n", v_dot(direction, up));
         
         // Handle movement
         // Move forward
