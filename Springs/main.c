@@ -22,7 +22,7 @@
 #include "vert_export.h"
 #include "bending_stiffness.h"
 
-unsigned char paused = 1;
+unsigned char paused = 0;
 unsigned char momentum = 1;
 unsigned char fixpt_on = 0;
 unsigned char gravity_on = 0;
@@ -153,7 +153,7 @@ int main(int argc, const char * argv[])
     }
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(1280, 960, "Jellyfish Tentacles", NULL, NULL);
+    window = glfwCreateWindow(640, 480, "Jellyfish Tentacles", NULL, NULL);
     if (!window)
     {
         glfwTerminate();

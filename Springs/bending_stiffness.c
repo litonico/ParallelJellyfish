@@ -30,10 +30,9 @@ void precompute_stiffness(double stiffness_mu, StiffnessDataContainer *Stiffness
     StiffnessConstants->lambda = stiffness_mu * 
                                 (2.0/3.0) * 
                                 (N_A + N_B)/((N_A*N_B)*(N_A*N_B));
-
 }
 
-void runtime_stiffness(Particle verts[], 
+void runtime_stiffness(Particle verts[],
         FacePair facepairs[], int num_facepairs, 
         StiffnessDataContainer *constants, 
         float simulation_speed) {

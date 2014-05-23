@@ -1,4 +1,5 @@
 from generate_hyperbolic import *
+
 try:
     from graphics import *
 except ImportError:
@@ -11,7 +12,7 @@ module. Uses the graphics.py module by John Zelle.
 
 """
 
-verts, edges = make_hyperbolic(5, [2, 2, 2, 2, 2, 2, 2])
+verts, edges = make_hyperbolic(20, [2, 6, 6, 6, 6, 6])
 radius = 2
 scale = 35
 offset = 10
