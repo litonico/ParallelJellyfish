@@ -1,4 +1,4 @@
-CC = clang
+CC = nvcc
 
 GLFW = -lglfw3 -framework Cocoa -framework OpenGL \
 	   -framework IOKit -framework CoreVideo
@@ -10,7 +10,7 @@ CFLAGS_STRICT = -std=c99 -pipe -O2 -Werror -Wall -Wpedantic \
 
 # GLU is deprecated in 10.9, but the replacement is C++-only;
 # So, we'll use -Wno-deprecated as long as we can get away with it.
-CFLAGS = -c -g -std=c99 -Wall -Wno-deprecated-declarations
+CFLAGS = -c
 
 all: Jellyfish
 
@@ -18,8 +18,8 @@ Jellyfish: main.o vectormath.o verlet.o draw.o vert_export.o bending_stiffness.o
 	$(CC) -g -o Jellyfish \
 		main.o vectormath.o verlet.o draw.o vert_export.o bending_stiffness.o $(GLFW)
 
-main.o: main.c mesh_elements.h verlet.h vectormath.h draw.h vert_export.h
-	$(CC) $(CFLAGS) main.c 
+main.o: main.cu mesh_elements.h verlet.h vectormath.h draw.h vert_export.h
+	$(CC) $(CFLAGS) main.cu 
 
 verlet.o: verlet.c verlet.h vectormath.h 
 	$(CC) $(CFLAGS) verlet.c 

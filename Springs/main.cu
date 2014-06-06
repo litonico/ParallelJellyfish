@@ -50,7 +50,7 @@ int main(int argc, const char * argv[])
     FILE *fv;
     fv = fopen("data/verts", "r+");
 
-    if( fv == NULL){
+    if (fv == NULL){
         printf("Cannot find file ../data/verts\n");
         exit(-1);
     }
@@ -59,8 +59,12 @@ int main(int argc, const char * argv[])
     fscanf(fv, "%d", &NUM_PARTICLES);
 
     // Allocate the particle-array
-    Particle* p = (Particle *) calloc(NUM_PARTICLES,
+    Particle *p = (Particle *) calloc(NUM_PARTICLES,
             sizeof(Particle[NUM_PARTICLES]));
+    
+    // CUDA malloc
+    Particle *device_p;
+    cudaMalloc(device_p, NUM_PARTICLES*sizeof(Particle));
 
     // Loop through the vert file to
     // fill the particle-array
@@ -78,6 +82,8 @@ int main(int argc, const char * argv[])
         }
     }
 
+    // Transfer results to CUDA
+    cudaMemcpy(device_p, p, NUM_EDGES*sizeof(Particle), cudaMemcpyHostToDevice);
 
     fclose(fv);
     
@@ -94,8 +100,12 @@ int main(int argc, const char * argv[])
     fscanf(fe, "%d", &NUM_EDGES);
 
     // Allocate the edge-array
-    Edge* e = (Edge *) calloc(NUM_EDGES,
+    Edge *e = (Edge *) calloc(NUM_EDGES,
             sizeof(Edge[NUM_EDGES]));
+    
+    // CUDA malloc
+    Edge *device_e;
+    cudaMalloc(device_e, NUM_EDGES*sizeof(Edge));
 
     // Loop through the file to fill the 
     // edge-array
@@ -103,6 +113,9 @@ int main(int argc, const char * argv[])
         fscanf(fe, "%d %d %lf",
                 &e[i].a, &e[i].b, &e[i].length);
     }
+
+    // Transfer results to CUDA
+    cudaMemcpy(device_e, e, NUM_EDGES*sizeof(Edge), cudaMemcpyHostToDevice);
 
     fclose(fe);
 
@@ -122,12 +135,18 @@ int main(int argc, const char * argv[])
     FacePair* fp = (FacePair *) calloc(NUM_FACEPAIRS,
             sizeof(FacePair[NUM_FACEPAIRS]));
 
+    FacePair *device_fp;
+    cudaMalloc(device_fp, NUM_FACEPAIRS*sizeof(FacePair));
+
     for (int i = 0; i < NUM_FACEPAIRS; i++){
         fscanf(ffp, "%d %d %d %d",
                 &fp[i].C, &fp[i].D, &fp[i].A, &fp[i].B);
         // Important! First two verts in a facepair are 
         // the internal edge, CD.
     }
+
+    // Transfer results to CUDA
+    cudaMemcpy(device_fp, fp, NUM_FACEPAIRS*sizeof(FacePair), cudaMemcpyHostToDevice);
 
     fclose(ffp);
     
